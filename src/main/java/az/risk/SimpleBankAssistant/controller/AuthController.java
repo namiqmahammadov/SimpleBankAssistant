@@ -75,6 +75,7 @@ public class AuthController {
 		}
 
 		User user = new User();
+		user.setFullname(registerRequest.getFullname());
 		user.setEmail(registerRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 		user.setEnabled(false);

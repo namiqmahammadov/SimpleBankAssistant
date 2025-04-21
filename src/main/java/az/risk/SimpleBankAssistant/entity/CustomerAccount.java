@@ -26,7 +26,7 @@ public class CustomerAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId; 
     @Column(nullable = false, unique = true)
-    private String iban; // KapitalBank-da IBAN formatında ola bilər
+    private String iban;
     @Enumerated(EnumType.STRING)
     private CurrencyType currency; // AZN, USD, EUR
     @Column(precision = 19, scale = 2)
@@ -37,6 +37,6 @@ public class CustomerAccount {
 
     private LocalDateTime closedDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private User userId;
 }

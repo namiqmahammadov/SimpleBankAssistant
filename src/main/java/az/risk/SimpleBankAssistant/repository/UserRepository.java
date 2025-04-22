@@ -6,6 +6,6 @@ import az.risk.SimpleBankAssistant.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findByEmail(String userName);
+	User findByEmail(String email);
 
 }

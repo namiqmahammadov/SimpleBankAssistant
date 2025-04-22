@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
 @Repository
 public interface CustomerAccountRepository extends JpaRepository<CustomerAccount, Long> {
-    Optional<CustomerAccount> findByIban(String iban); // IBAN ilə hesab axtarma
+    Optional<CustomerAccount> findByIban(String iban); 
 }

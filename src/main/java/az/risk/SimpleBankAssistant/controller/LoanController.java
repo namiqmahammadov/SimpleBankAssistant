@@ -28,4 +28,9 @@ public class LoanController {
     public ResponseEntity<?> getLoanDebt() {
         return loanService.getLoanDebt();
     }
+    @GetMapping("/total-debt")
+    public ResponseEntity<?> getTotalLoanDebt() {
+        return loanService.getTotalLoanDebt();
+    }
+
 }

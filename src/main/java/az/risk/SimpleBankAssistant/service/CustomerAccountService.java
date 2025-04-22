@@ -38,7 +38,9 @@ public class CustomerAccountService {
 		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
 		if (accountOptional.isPresent()) {
 			CustomerAccount account = accountOptional.get();
-			account.setAvailableBalance(account.getAvailableBalance().add(amount)); // Balans artımı
+			BigDecimal newBalance = account.getAvailableBalance().add(amount);
+
+			account.setAvailableBalance(newBalance);
 			return customerAccountRepository.save(account);
 		}
 		throw new RuntimeException("Hesab tapılmadı");

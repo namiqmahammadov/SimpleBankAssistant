@@ -65,7 +65,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     	httpSecurity
@@ -75,9 +74,7 @@ public class SecurityConfig {
     		.exceptionHandling().authenticationEntryPoint(handler).and()
     		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
     		.authorizeRequests()
-    		.requestMatchers(HttpMethod.GET, "/posts")
-    		.permitAll()
-    		.requestMatchers("/auth/**")
+    		.antMatchers("/auth/**")
     		.permitAll()
     		.anyRequest().authenticated();
     		

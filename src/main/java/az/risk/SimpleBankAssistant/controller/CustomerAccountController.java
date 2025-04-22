@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
+import az.risk.SimpleBankAssistant.requests.BalanceUpdateRequest;
+import az.risk.SimpleBankAssistant.requests.CurrencyConversionRequest;
 import az.risk.SimpleBankAssistant.service.CustomerAccountService;
 
 @RestController
@@ -29,37 +30,39 @@ public class CustomerAccountController {
         this.customerAccountService = customerAccountService;
     }
 
-    // Hesab yaratma
+   
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerAccount createAccount(@RequestBody CustomerAccount customerAccount) {
         return customerAccountService.createAccount(customerAccount);
     }
 
-    // Hesaba balans əlavə etmə
+   
     @PutMapping("/{accountId}/balance")
-    public CustomerAccount updateBalance(@PathVariable Long accountId, @RequestParam BigDecimal amount) {
-        return customerAccountService.updateBalance(accountId, amount);
+    public CustomerAccount updateBalance(@PathVariable Long accountId,@RequestBody BalanceUpdateRequest request) {
+        return customerAccountService.updateBalance(accountId, request.getAmount());
     }
 
-    // Hesabın balansını göstərmə
+  
     @GetMapping("/{accountId}/balance")
     public BigDecimal getBalance(@PathVariable Long accountId) {
         return customerAccountService.getBalance(accountId);
     }
 
-    // Hesab bağlama
+
     @DeleteMapping("/{accountId}")
     public void closeAccount(@PathVariable Long accountId) {
         customerAccountService.closeAccount(accountId);
     }
 
-    // Valyuta çevirmə
     @PutMapping("/{accountId}/convert")
     public BigDecimal convertCurrency(@PathVariable Long accountId,
-                                      @RequestParam String fromCurrency,
-                                      @RequestParam String toCurrency,
-                                      @RequestParam BigDecimal amount) {
-        return customerAccountService.convertCurrency(accountId, fromCurrency, toCurrency, amount);
+                                      @RequestBody CurrencyConversionRequest request) {
+        return customerAccountService.convertCurrency(
+                accountId,
+                request.getFromCurrency(),
+                request.getToCurrency()
+        );
     }
+
 }

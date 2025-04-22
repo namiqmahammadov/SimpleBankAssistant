@@ -1,60 +1,44 @@
 package az.risk.SimpleBankAssistant.util;
 
-import java.math.BigDecimal;
-
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Component
 public class CurrencyConverterUtil {
 
-	private final String API_KEY = "eccdf95feb5d9531d6338a98"; 
-	private final String API_URL = "https://v6.exchangerate-api.com/v6/" + API_KEY + "/latest/";
+    // Statik kurslar
+    private static final BigDecimal USD_TO_AZN = BigDecimal.valueOf(1.7);   // 1 USD = 1.7 AZN
+    private static final BigDecimal EUR_TO_AZN = BigDecimal.valueOf(1.85);  // 1 EUR = 1.85 AZN
 
-	private RestTemplate restTemplate = new RestTemplate();
+    // Əlavə kurslar
+    private static final BigDecimal EUR_TO_USD = EUR_TO_AZN.divide(USD_TO_AZN, 6, RoundingMode.HALF_UP); // ~1.088
+    private static final BigDecimal USD_TO_EUR = USD_TO_AZN.divide(EUR_TO_AZN, 6, RoundingMode.HALF_UP); // ~0.919
 
-	public BigDecimal convert(BigDecimal amount, String fromCurrency, String toCurrency) {
-		
-		String url = API_URL + fromCurrency;
-		ExchangeRateResponse response = restTemplate.getForObject(url, ExchangeRateResponse.class);
+    public BigDecimal convert(BigDecimal amount, String fromCurrency, String toCurrency) {
+        fromCurrency = fromCurrency.toUpperCase();
+        toCurrency = toCurrency.toUpperCase();
 
-		if (response != null && response.getConversionRates() != null) {
-			BigDecimal conversionRate = response.getConversionRates().get(toCurrency);
-			if (conversionRate != null) {
-				return amount.multiply(conversionRate);
-			}
-		}
-		return amount; 
-	}
-    // Valyuta çevirmə üçün response obyekti
-    public static class ExchangeRateResponse {
-        private String result;
-        private String baseCode;
-        private java.util.Map<String, BigDecimal> conversionRates;
-
-        public java.util.Map<String, BigDecimal> getConversionRates() {
-            return conversionRates;
+        if (fromCurrency.equals(toCurrency)) {
+            return amount;
         }
 
-        public void setConversionRates(java.util.Map<String, BigDecimal> conversionRates) {
-            this.conversionRates = conversionRates;
-        }
-
-        public String getResult() {
-            return result;
-        }
-
-        public void setResult(String result) {
-            this.result = result;
-        }
-
-        public String getBaseCode() {
-            return baseCode;
-        }
-
-        public void setBaseCode(String baseCode) {
-            this.baseCode = baseCode;
+        switch (fromCurrency + "_" + toCurrency) {
+            case "AZN_USD":
+                return amount.divide(USD_TO_AZN, 4, RoundingMode.HALF_UP);
+            case "AZN_EUR":
+                return amount.divide(EUR_TO_AZN, 4, RoundingMode.HALF_UP);
+            case "USD_AZN":
+                return amount.multiply(USD_TO_AZN);
+            case "EUR_AZN":
+                return amount.multiply(EUR_TO_AZN);
+            case "USD_EUR":
+                return amount.multiply(USD_TO_EUR).setScale(4, RoundingMode.HALF_UP);
+            case "EUR_USD":
+                return amount.multiply(EUR_TO_USD).setScale(4, RoundingMode.HALF_UP);
+            default:
+                throw new IllegalArgumentException("Unsupported currency conversion: " + fromCurrency + " to " + toCurrency);
         }
     }
-
 }

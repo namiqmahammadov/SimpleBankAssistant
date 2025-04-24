@@ -29,23 +29,29 @@ public class CustomerAccountService {
 	public CustomerAccount createAccount(CustomerAccount customerAccount) {
 
 		customerAccount.setIban(IbanGenerator.generateRandomIban());
-
+		customerAccount.setAvailableBalance(BigDecimal.ZERO);
 		customerAccount.setUser(getUser());
 		return customerAccountRepository.save(customerAccount);
 	}
 
 	public CustomerAccount updateBalance(Long accountId, BigDecimal amount) {
-		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
-		if (accountOptional.isPresent()) {
-			CustomerAccount account = accountOptional.get();
-			BigDecimal newBalance = account.getAvailableBalance().add(amount);
+	    Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
 
-			account.setAvailableBalance(newBalance);
-			return customerAccountRepository.save(account);
-		}
-		throw new RuntimeException("Hesab tapılmadı");
+	    if (accountOptional.isPresent()) {
+	        CustomerAccount account = accountOptional.get();
+
+	        BigDecimal currentBalance = account.getAvailableBalance() != null
+	                ? account.getAvailableBalance()
+	                : BigDecimal.ZERO;
+
+	        BigDecimal newBalance = currentBalance.add(amount);
+	        account.setAvailableBalance(newBalance);
+
+	        return customerAccountRepository.save(account);
+	    }
+
+	    throw new RuntimeException("Hesab tapılmadı");
 	}
-
 	public BigDecimal getBalance(Long accountId) {
 		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
 		if (accountOptional.isPresent()) {

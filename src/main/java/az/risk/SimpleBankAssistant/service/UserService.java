@@ -36,6 +36,7 @@ private	UserRepository userRepository;
 		Optional<User> user = userRepository.findById(userId);
 		if(user.isPresent()) {
 			User foundUser = user.get();
+			foundUser.setFullname(newUser.getFullname());
 			foundUser.setEmail(newUser.getEmail());
 			foundUser.setPassword(newUser.getPassword());
 			

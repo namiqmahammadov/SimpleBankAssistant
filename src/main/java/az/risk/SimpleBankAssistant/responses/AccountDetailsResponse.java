@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import az.risk.SimpleBankAssistant.enums.CurrencyType;
-
+import lombok.Data;
+@Data
 public class AccountDetailsResponse {
     private Long accountId;
     private String iban;

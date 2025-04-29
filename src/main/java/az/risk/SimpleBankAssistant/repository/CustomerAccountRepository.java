@@ -11,5 +11,7 @@ import az.risk.SimpleBankAssistant.entity.CustomerAccount;
 public interface CustomerAccountRepository extends JpaRepository<CustomerAccount, Long> {
     Optional<CustomerAccount> findByIban(String iban); 
     List<CustomerAccount> findByUser(String user);
+	
+	List<CustomerAccount> findByUserAndIsAccountActive(String user, boolean isAccountActive);
 
 }

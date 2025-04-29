@@ -29,9 +29,7 @@ public class MoneyTransferService {
         if (senderAccounts.isEmpty()) {
             throw new RuntimeException("Göndərən hesab tapılmadı");
         }
-//        if (!otpService.verifyOtp(sender.getUser(), dto.getOtpCode())) {
-//            throw new RuntimeException("OTP doğrulama uğursuz oldu");
-//        }
+
         CustomerAccount sender = senderAccounts.stream()
             .filter(acc -> acc.getIban().equals(dto.getSenderIban()))
             .findFirst()

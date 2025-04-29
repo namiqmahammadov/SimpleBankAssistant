@@ -2,7 +2,6 @@ package az.risk.SimpleBankAssistant.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,11 +22,10 @@ import az.risk.SimpleBankAssistant.service.UserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
-	private UserDetailsServiceImpl userDetailsService;
-	
-	private JwtAuthenticationEntryPoint handler;
-	
+    
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationEntryPoint handler;
+    
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationEntryPoint handler) {
         this.userDetailsService = userDetailsService;
         this.handler = handler;
@@ -35,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    	return new JwtAuthenticationFilter();
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
@@ -65,21 +63,21 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    	httpSecurity
-    		.cors()
-    		.and()
-    		.csrf().disable()
-    		.exceptionHandling().authenticationEntryPoint(handler).and()
-    		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-    		.authorizeRequests()
-    		.antMatchers("/auth/**")
-    		.permitAll()
-    		.anyRequest().authenticated();
-    		
-    	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    	return httpSecurity.build();
+        httpSecurity
+            .cors()
+            .and()
+            .csrf().disable()
+            .exceptionHandling().authenticationEntryPoint(handler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .authorizeRequests()
+            .antMatchers("/auth/**").permitAll()
+            .antMatchers("/api/chatbot/**").authenticated()
+            .anyRequest().authenticated();
+            
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
-
 }

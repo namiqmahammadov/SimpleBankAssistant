@@ -1,6 +1,7 @@
 package az.risk.SimpleBankAssistant.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,4 +96,7 @@ public class CustomerAccountService {
 	private String getUser() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
+	 public List<CustomerAccount> getUserAccounts(String user) {
+	        return customerAccountRepository.findByUserAndIsAccountActive(user, true);
+	    }
 }

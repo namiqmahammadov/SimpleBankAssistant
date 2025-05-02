@@ -14,4 +14,5 @@ public class AccountDetailsResponse {
     private Boolean isAccountActive;
     private LocalDateTime openedDate;
     private LocalDateTime closedDate;
+	
 }

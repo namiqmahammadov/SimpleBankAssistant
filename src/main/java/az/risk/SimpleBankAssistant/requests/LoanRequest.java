@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class LoanRequest {
     private BigDecimal amount;
-    private Integer loanTermInMonths; // Kredit müddəti (ayla)
+    private Integer loanTermInMonths; 
     private String loanPurpose;  
-    private String ibanSuffix; // məsələn: "2901"
+    private String ibanSuffix; 
 
 
 }

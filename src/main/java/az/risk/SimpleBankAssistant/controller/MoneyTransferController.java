@@ -61,9 +61,5 @@ public class MoneyTransferController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/history")
-    public ResponseEntity<List<MoneyTransfer>> getHistory() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(transferService.getTransferHistory(username));
-    }
+  
 }

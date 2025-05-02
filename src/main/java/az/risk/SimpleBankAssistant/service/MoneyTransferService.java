@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
@@ -64,8 +65,11 @@ public class MoneyTransferService {
         response.setDate(transfer.getTransferDate());
         return response;
     }
-
-    public List<MoneyTransfer> getTransferHistory(String username) {
+    private String getUser() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+    public List<MoneyTransfer> getTransferHistory() {
+    	String username=getUser();
         List<CustomerAccount> accounts = accountRepository.findByUser(username);
         if (accounts.isEmpty()) {
             throw new RuntimeException("İstifadəçi hesabı tapılmadı");

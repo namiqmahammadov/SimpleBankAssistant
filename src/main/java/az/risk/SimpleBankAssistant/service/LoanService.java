@@ -13,5 +13,7 @@ public interface LoanService {
     LoanResponse applyForLoan(LoanRequest request);
     ResponseEntity<?> getLoanDebt(); // Yeni metod
     ResponseEntity<?> getTotalLoanDebt(); // Yeni API
+    ResponseEntity<?> getLoanHistory();
+
 
 }

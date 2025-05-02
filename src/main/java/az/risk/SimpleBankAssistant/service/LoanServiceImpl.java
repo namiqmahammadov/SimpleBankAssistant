@@ -1,6 +1,7 @@
 package az.risk.SimpleBankAssistant.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
 import az.risk.SimpleBankAssistant.entity.Loan;
+import az.risk.SimpleBankAssistant.entity.LoanHistory;
 import az.risk.SimpleBankAssistant.repository.CustomerAccountRepository;
+import az.risk.SimpleBankAssistant.repository.LoanHistoryRepository;
 import az.risk.SimpleBankAssistant.repository.LoanRepository;
 import az.risk.SimpleBankAssistant.requests.LoanRequest;
 import az.risk.SimpleBankAssistant.responses.LoanResponse;
@@ -22,7 +25,18 @@ public class LoanServiceImpl implements LoanService {
 	@Autowired
 	private LoanRepository loanRepository;
 	@Autowired
-	private CustomerAccountRepository customerAccountRepository; // IBAN-ı yoxlamaq üçün
+	private CustomerAccountRepository customerAccountRepository; 
+	
+	@Autowired
+	private LoanHistoryRepository loanHistoryRepository;
+	
+	@Override
+	public ResponseEntity<?> getLoanHistory() {
+	    String currentUser = getUser();
+	    var historyList = loanHistoryRepository.findByUser(currentUser);
+	    return ResponseEntity.ok(historyList);
+	}
+
 
 	public LoanResponse applyForLoan(LoanRequest request) {
 		String currentUser = getUser();
@@ -68,6 +82,18 @@ public class LoanServiceImpl implements LoanService {
 		response.setLoanPurpose(saved.getLoanPurpose());
 		response.setActive(saved.isActive());
 		response.setIban(saved.getIban());
+		
+		LoanHistory history = new LoanHistory();
+		history.setLoanId(saved.getId());
+		history.setAmount(saved.getAmount());
+		history.setInterestRate(saved.getInterestRate());
+		history.setLoanTermInMonths(saved.getLoanTermInMonths());
+		history.setLoanPurpose(saved.getLoanPurpose());
+		history.setIban(saved.getIban());
+		history.setOperationType("APPLY");
+		history.setOperationDate(LocalDateTime.now());
+		history.setUser(currentUser);
+		loanHistoryRepository.save(history);
 
 		return response;
 	}

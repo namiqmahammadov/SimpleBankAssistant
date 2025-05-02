@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Data;
 
 @Entity
@@ -23,6 +25,7 @@ public class MoneyTransfer {
     private String receiverIban;
 
     private BigDecimal amount;
+    @CreationTimestamp
     private LocalDateTime transferDate;
 
     private Boolean isSuccessful;

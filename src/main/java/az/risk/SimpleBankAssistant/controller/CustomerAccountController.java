@@ -1,9 +1,12 @@
 package az.risk.SimpleBankAssistant.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,11 +61,8 @@ public class CustomerAccountController {
     @PutMapping("/{accountId}/convert")
     public BigDecimal convertCurrency(@PathVariable Long accountId,
                                       @RequestBody CurrencyConversionRequest request) {
-        return customerAccountService.convertCurrency(
-                accountId,
-                request.getFromCurrency(),
-                request.getToCurrency()
-        );
+        return customerAccountService.convertCurrency(accountId, request.getToCurrency());
     }
+
 
 }

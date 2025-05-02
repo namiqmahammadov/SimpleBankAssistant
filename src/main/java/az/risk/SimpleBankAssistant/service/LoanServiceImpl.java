@@ -25,18 +25,17 @@ public class LoanServiceImpl implements LoanService {
 	@Autowired
 	private LoanRepository loanRepository;
 	@Autowired
-	private CustomerAccountRepository customerAccountRepository; 
-	
+	private CustomerAccountRepository customerAccountRepository;
+
 	@Autowired
 	private LoanHistoryRepository loanHistoryRepository;
-	
+
 	@Override
 	public ResponseEntity<?> getLoanHistory() {
-	    String currentUser = getUser();
-	    var historyList = loanHistoryRepository.findByUser(currentUser);
-	    return ResponseEntity.ok(historyList);
+		String currentUser = getUser();
+		var historyList = loanHistoryRepository.findByUser(currentUser);
+		return ResponseEntity.ok(historyList);
 	}
-
 
 	public LoanResponse applyForLoan(LoanRequest request) {
 		String currentUser = getUser();
@@ -82,7 +81,7 @@ public class LoanServiceImpl implements LoanService {
 		response.setLoanPurpose(saved.getLoanPurpose());
 		response.setActive(saved.isActive());
 		response.setIban(saved.getIban());
-		
+
 		LoanHistory history = new LoanHistory();
 		history.setLoanId(saved.getId());
 		history.setAmount(saved.getAmount());

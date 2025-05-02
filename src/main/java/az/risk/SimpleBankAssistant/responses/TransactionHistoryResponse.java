@@ -7,16 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @Builder
 public class TransactionHistoryResponse {
 
-    private Long id;
-    private BigDecimal amount;
-    private String transactionType;
-    private LocalDateTime transactionDate;
-
-  
+	private Long id;
+	private BigDecimal amount;
+	private String transactionType;
+	private LocalDateTime transactionDate;
 
 }

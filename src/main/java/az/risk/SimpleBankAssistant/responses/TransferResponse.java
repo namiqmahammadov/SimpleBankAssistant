@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class TransferResponse {
-    private String message;
-    private LocalDateTime date;
+	private String message;
+	private LocalDateTime date;
 }

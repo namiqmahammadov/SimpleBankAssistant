@@ -14,71 +14,70 @@ import az.risk.SimpleBankAssistant.repository.CustomerAccountRepository;
 import az.risk.SimpleBankAssistant.repository.MoneyTransferRepository;
 import az.risk.SimpleBankAssistant.requests.TransferRequest;
 import az.risk.SimpleBankAssistant.responses.TransferResponse;
+
 @Service
 public class MoneyTransferService {
 
-    @Autowired
-    private CustomerAccountRepository accountRepository;
+	@Autowired
+	private CustomerAccountRepository accountRepository;
 
-    @Autowired
-    private MoneyTransferRepository transferRepository;
+	@Autowired
+	private MoneyTransferRepository transferRepository;
 
-    @Autowired
-    private OtpService otpService;
-    public TransferResponse transferMoney(String senderUsername, TransferRequest dto) {
-        List<CustomerAccount> senderAccounts = accountRepository.findByUser(senderUsername);
-        if (senderAccounts.isEmpty()) {
-            throw new RuntimeException("Göndərən hesab tapılmadı");
-        }
+	@Autowired
+	private OtpService otpService;
 
-        CustomerAccount sender = senderAccounts.stream()
-            .filter(acc -> acc.getIban().equals(dto.getSenderIban()))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Göndərən IBAN tapılmadı"));
+	public TransferResponse transferMoney(String senderUsername, TransferRequest dto) {
+		List<CustomerAccount> senderAccounts = accountRepository.findByUser(senderUsername);
+		if (senderAccounts.isEmpty()) {
+			throw new RuntimeException("Göndərən hesab tapılmadı");
+		}
 
-    
-        CustomerAccount receiver = accountRepository.findByIban(dto.getReceiverIban())
-            .orElseThrow(() -> new RuntimeException("Qəbul edən IBAN tapılmadı"));
+		CustomerAccount sender = senderAccounts.stream().filter(acc -> acc.getIban().equals(dto.getSenderIban()))
+				.findFirst().orElseThrow(() -> new RuntimeException("Göndərən IBAN tapılmadı"));
 
-        if (sender.getAvailableBalance().compareTo(dto.getAmount()) < 0) {
-            throw new RuntimeException("Balans kifayət etmir");
-        }
+		CustomerAccount receiver = accountRepository.findByIban(dto.getReceiverIban())
+				.orElseThrow(() -> new RuntimeException("Qəbul edən IBAN tapılmadı"));
 
-        // Balansı dəyiş
-        sender.setAvailableBalance(sender.getAvailableBalance().subtract(dto.getAmount()));
-        receiver.setAvailableBalance(receiver.getAvailableBalance().add(dto.getAmount()));
+		if (sender.getAvailableBalance().compareTo(dto.getAmount()) < 0) {
+			throw new RuntimeException("Balans kifayət etmir");
+		}
 
-        // yadda saxla
-        accountRepository.save(sender);
-        accountRepository.save(receiver);
+		// Balansı dəyiş
+		sender.setAvailableBalance(sender.getAvailableBalance().subtract(dto.getAmount()));
+		receiver.setAvailableBalance(receiver.getAvailableBalance().add(dto.getAmount()));
 
-        MoneyTransfer transfer = new MoneyTransfer();
-        transfer.setSenderIban(sender.getIban());
-        transfer.setReceiverIban(dto.getReceiverIban());
-        transfer.setAmount(dto.getAmount());
-        transfer.setTransferDate(LocalDateTime.now());
-        transfer.setIsSuccessful(true);
-        transferRepository.save(transfer);
+		// yadda saxla
+		accountRepository.save(sender);
+		accountRepository.save(receiver);
 
-        TransferResponse response = new TransferResponse();
-        response.setMessage("Köçürmə uğurla tamamlandı");
-        response.setDate(transfer.getTransferDate());
-        return response;
-    }
-    private String getUser() {
+		MoneyTransfer transfer = new MoneyTransfer();
+		transfer.setSenderIban(sender.getIban());
+		transfer.setReceiverIban(dto.getReceiverIban());
+		transfer.setAmount(dto.getAmount());
+		transfer.setTransferDate(LocalDateTime.now());
+		transfer.setIsSuccessful(true);
+		transferRepository.save(transfer);
+
+		TransferResponse response = new TransferResponse();
+		response.setMessage("Köçürmə uğurla tamamlandı");
+		response.setDate(transfer.getTransferDate());
+		return response;
+	}
+
+	private String getUser() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
-    public List<MoneyTransfer> getTransferHistory() {
-    	String username=getUser();
-        List<CustomerAccount> accounts = accountRepository.findByUser(username);
-        if (accounts.isEmpty()) {
-            throw new RuntimeException("İstifadəçi hesabı tapılmadı");
-        }
 
-        return accounts.stream()
-            .map(account -> transferRepository.findBySenderIban(account.getIban()))
-            .flatMap(List::stream)
-            .collect(Collectors.toList());
-    }
+	public List<MoneyTransfer> getTransferHistory() {
+		String username = getUser();
+		List<CustomerAccount> accounts = accountRepository.findByUser(username);
+		if (accounts.isEmpty()) {
+			throw new RuntimeException("İstifadəçi hesabı tapılmadı");
+		}
+
+		return accounts.stream().map(account -> transferRepository.findBySenderIban(account.getIban()))
+				.flatMap(List::stream).collect(Collectors.toList());
+	}
 
 }

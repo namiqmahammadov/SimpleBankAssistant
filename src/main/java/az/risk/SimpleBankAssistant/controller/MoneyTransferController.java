@@ -22,44 +22,43 @@ import az.risk.SimpleBankAssistant.service.OtpService;
 @RequestMapping("/transfers")
 public class MoneyTransferController {
 
-    @Autowired
-    private MoneyTransferService transferService;
+	@Autowired
+	private MoneyTransferService transferService;
 
-    @Autowired
-    private OtpService otpService;
+	@Autowired
+	private OtpService otpService;
 
-    private TransferRequest pendingTransferRequest;
+	private TransferRequest pendingTransferRequest;
 
-    @PostMapping
-    public ResponseEntity<String> initiateTransfer(@RequestBody TransferRequest dto) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        
-        otpService.sendOtpToEmail(email);
-        
-        this.pendingTransferRequest = dto;
+	@PostMapping
+	public ResponseEntity<String> initiateTransfer(@RequestBody TransferRequest dto) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return ResponseEntity.ok("OTP kodu göndərildi. OTP təsdiqindən sonra transfer həyata keçiriləcək.");
-    }
+		otpService.sendOtpToEmail(email);
 
-    @PostMapping("/verify-otp")
-    public ResponseEntity<TransferResponse> verifyOtp(@RequestBody Map<String, String> request) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        String code = request.get("code"); // Map-dən "code" açarı ilə OTP kodu al
+		this.pendingTransferRequest = dto;
 
-        boolean isOtpValid = otpService.verifyOtp(email, code);
-        if (!isOtpValid) {
-            throw new RuntimeException("OTP kodu səhvdir və ya vaxtı bitib!");
-        }
+		return ResponseEntity.ok("OTP kodu göndərildi. OTP təsdiqindən sonra transfer həyata keçiriləcək.");
+	}
 
-        if (pendingTransferRequest == null) {
-            throw new RuntimeException("Transfer məlumatı tapılmadı. Əvvəl transfer başlatmalısınız.");
-        }
+	@PostMapping("/verify-otp")
+	public ResponseEntity<TransferResponse> verifyOtp(@RequestBody Map<String, String> request) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		String code = request.get("code"); // Map-dən "code" açarı ilə OTP kodu al
 
-        TransferResponse response = transferService.transferMoney(email, pendingTransferRequest);
-        pendingTransferRequest = null;
+		boolean isOtpValid = otpService.verifyOtp(email, code);
+		if (!isOtpValid) {
+			throw new RuntimeException("OTP kodu səhvdir və ya vaxtı bitib!");
+		}
 
-        return ResponseEntity.ok(response);
-    }
+		if (pendingTransferRequest == null) {
+			throw new RuntimeException("Transfer məlumatı tapılmadı. Əvvəl transfer başlatmalısınız.");
+		}
 
-  
+		TransferResponse response = transferService.transferMoney(email, pendingTransferRequest);
+		pendingTransferRequest = null;
+
+		return ResponseEntity.ok(response);
+	}
+
 }

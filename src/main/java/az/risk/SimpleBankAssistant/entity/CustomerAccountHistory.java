@@ -13,20 +13,20 @@ import lombok.Data;
 @Table(name = "customer_account_history")
 public class CustomerAccountHistory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String iban;
+	private String iban;
 
-    private String operationType; // "BALANCE_UPDATE" or "CURRENCY_CONVERSION"
+	private String operationType; // "BALANCE_UPDATE" or "CURRENCY_CONVERSION"
 
-    private BigDecimal amount;
+	private BigDecimal amount;
 
-    @Enumerated(EnumType.STRING)
-    private CurrencyType currency;
+	@Enumerated(EnumType.STRING)
+	private CurrencyType currency;
 
-    private LocalDateTime operationDate;
+	private LocalDateTime operationDate;
 
-    private String user;
+	private String user;
 }

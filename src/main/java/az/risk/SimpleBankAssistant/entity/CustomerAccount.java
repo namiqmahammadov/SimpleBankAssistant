@@ -39,7 +39,6 @@ public class CustomerAccount {
 
 	private LocalDateTime openedDate;
 
-	
 	private LocalDateTime closedDate;
 
 	private String user;

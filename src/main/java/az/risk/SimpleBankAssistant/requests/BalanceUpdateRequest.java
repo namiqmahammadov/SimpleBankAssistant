@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Data
 public class BalanceUpdateRequest {
-    private BigDecimal amount;
+	private BigDecimal amount;
 }

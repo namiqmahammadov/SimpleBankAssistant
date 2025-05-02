@@ -11,25 +11,25 @@ import java.time.LocalDateTime;
 @Table(name = "loan_history")
 public class LoanHistory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Long loanId;
+	private Long loanId;
 
-    private BigDecimal amount;
+	private BigDecimal amount;
 
-    private Double interestRate;
+	private Double interestRate;
 
-    private Integer loanTermInMonths;
+	private Integer loanTermInMonths;
 
-    private String loanPurpose;
+	private String loanPurpose;
 
-    private String iban;
+	private String iban;
 
-    private String operationType; // APPLY, CLOSE və s.
+	private String operationType; // APPLY, CLOSE və s.
 
-    private LocalDateTime operationDate;
+	private LocalDateTime operationDate;
 
-    private String user; // Əməliyyatı edən istifadəçi
+	private String user; // Əməliyyatı edən istifadəçi
 }

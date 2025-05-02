@@ -18,16 +18,16 @@ import az.risk.SimpleBankAssistant.service.MoneyTransferService;
 @RequestMapping("/history")
 public class HistoryController {
 
-
 	@Autowired
 	private CustomerAccountService customerAccountService;
 	@Autowired
 	private LoanService loanService;
-@Autowired
-private MoneyTransferService moneyTransferService;
+	@Autowired
+	private MoneyTransferService moneyTransferService;
+
 	@GetMapping("/transfer")
 	public List<MoneyTransfer> getTransferHistory() {
-		
+
 		return moneyTransferService.getTransferHistory();
 
 	}

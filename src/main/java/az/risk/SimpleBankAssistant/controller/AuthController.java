@@ -81,7 +81,6 @@ public class AuthController {
 		user.setEnabled(false);
 		userService.saveOneUser(user);
 
-
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 				registerRequest.getEmail(), registerRequest.getPassword());
 		Authentication auth = authenticationManager.authenticate(authToken);
@@ -116,16 +115,16 @@ public class AuthController {
 
 	@PostMapping("/send-otp")
 	public ResponseEntity<String> sendOtp(@RequestBody Map<String, String> request) {
-	    String email = request.get("email");
-	    User user = userService.getOneUserByEmail(email);
-	    if (user == null) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi qeydiyyatdan keçməyib.");
-	    }
-	    if (user.isEnabled()) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi artıq aktivdir.");
-	    }
-	    otpService.sendOtpToEmail(email);
-	    return ResponseEntity.ok("OTP kod göndərildi.");
+		String email = request.get("email");
+		User user = userService.getOneUserByEmail(email);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi qeydiyyatdan keçməyib.");
+		}
+		if (user.isEnabled()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi artıq aktivdir.");
+		}
+		otpService.sendOtpToEmail(email);
+		return ResponseEntity.ok("OTP kod göndərildi.");
 	}
 
 	@PostMapping("/verify-otp")

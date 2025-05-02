@@ -17,16 +17,16 @@ import lombok.Data;
 @Data
 @Table(name = "money_transfers")
 public class MoneyTransfer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String senderIban;
-    private String receiverIban;
+	private String senderIban;
+	private String receiverIban;
 
-    private BigDecimal amount;
-    @CreationTimestamp
-    private LocalDateTime transferDate;
+	private BigDecimal amount;
+	@CreationTimestamp
+	private LocalDateTime transferDate;
 
-    private Boolean isSuccessful;
+	private Boolean isSuccessful;
 }

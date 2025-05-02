@@ -1,7 +1,5 @@
 package az.risk.SimpleBankAssistant.entity;
 
-
-
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,14 +12,14 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="otp")
+@Table(name = "otp")
 public class OtpCode {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String email;
-    private String code;
-    private boolean used;
-    private Date expiryDate;
+	private String email;
+	private String code;
+	private boolean used;
+	private Date expiryDate;
 }

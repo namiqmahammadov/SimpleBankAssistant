@@ -12,12 +12,11 @@ import az.risk.SimpleBankAssistant.repository.UserRepository;
 @Service
 public class UserService {
 
-private	UserRepository userRepository;
-
+	private UserRepository userRepository;
 
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		
+
 	}
 
 	public List<User> getAllUsers() {
@@ -34,29 +33,28 @@ private	UserRepository userRepository;
 
 	public User updateOneUser(Long userId, User newUser) {
 		Optional<User> user = userRepository.findById(userId);
-		if(user.isPresent()) {
+		if (user.isPresent()) {
 			User foundUser = user.get();
 			foundUser.setFullname(newUser.getFullname());
 			foundUser.setEmail(newUser.getEmail());
 			foundUser.setPassword(newUser.getPassword());
-			
+
 			userRepository.save(foundUser);
 			return foundUser;
-		}else
+		} else
 			return null;
 	}
 
 	public void deleteById(Long userId) {
 		try {
-		userRepository.deleteById(userId);
-		}catch(EmptyResultDataAccessException e) { 
-			System.out.println("User "+userId+" doesn't exist"); 
+			userRepository.deleteById(userId);
+		} catch (EmptyResultDataAccessException e) {
+			System.out.println("User " + userId + " doesn't exist");
 		}
 	}
 
 	public User getOneUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-
 
 }

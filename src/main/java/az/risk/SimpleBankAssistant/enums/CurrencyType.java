@@ -1,5 +1,5 @@
 package az.risk.SimpleBankAssistant.enums;
 
 public enum CurrencyType {
-AZN, USD, EUR
+	AZN, USD, EUR
 }

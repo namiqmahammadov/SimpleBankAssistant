@@ -12,8 +12,8 @@ public class UserResponse {
 
 	public UserResponse(User entity) {
 		this.id = entity.getId();
-		this.fullname=entity.getFullname();
-		this.email=entity.getEmail();
-		
-	} 
+		this.fullname = entity.getFullname();
+		this.email = entity.getEmail();
+
+	}
 }

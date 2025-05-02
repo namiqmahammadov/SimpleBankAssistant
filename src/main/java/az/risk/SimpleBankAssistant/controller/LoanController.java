@@ -16,25 +16,27 @@ import az.risk.SimpleBankAssistant.service.LoanService;
 @RequestMapping("/loans")
 public class LoanController {
 
-    @Autowired
-    private LoanService loanService;
+	@Autowired
+	private LoanService loanService;
 
-    @PostMapping("/apply")
-    public LoanResponse applyForLoan(@RequestBody LoanRequest request) {
-        return loanService.applyForLoan(request);
-    }
+	@PostMapping("/apply")
+	public LoanResponse applyForLoan(@RequestBody LoanRequest request) {
+		return loanService.applyForLoan(request);
+	}
 
-    @GetMapping("/debt")
-    public ResponseEntity<?> getLoanDebt() {
-        return loanService.getLoanDebt();
-    }
-    @GetMapping("/total-debt")
-    public ResponseEntity<?> getTotalLoanDebt() {
-        return loanService.getTotalLoanDebt();
-    }
-    @GetMapping("/history")
-    public ResponseEntity<?> getLoanHistory() {
-        return loanService.getLoanHistory();
-    }
+	@GetMapping("/debt")
+	public ResponseEntity<?> getLoanDebt() {
+		return loanService.getLoanDebt();
+	}
+
+	@GetMapping("/total-debt")
+	public ResponseEntity<?> getTotalLoanDebt() {
+		return loanService.getTotalLoanDebt();
+	}
+
+	@GetMapping("/history")
+	public ResponseEntity<?> getLoanHistory() {
+		return loanService.getLoanHistory();
+	}
 
 }

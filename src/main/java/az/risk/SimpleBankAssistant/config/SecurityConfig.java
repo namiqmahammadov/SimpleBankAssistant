@@ -64,15 +64,20 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(handler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/auth/**").permitAll().antMatchers("/api/chatbot/**").authenticated().anyRequest()
-				.authenticated();
+	    httpSecurity.cors().and().csrf().disable()
+	        .exceptionHandling().authenticationEntryPoint(handler).and()
+	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	        .authorizeRequests()
+	            // Swagger və OpenAPI üçün istisnalar əlavə edilir
+	            .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+	            .antMatchers("/auth/**").permitAll()
+	            .antMatchers("/api/chatbot/**").authenticated()
+	            .anyRequest().authenticated();
 
-		httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		return httpSecurity.build();
+	    httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+	    return httpSecurity.build();
 	}
+
 }

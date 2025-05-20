@@ -140,7 +140,7 @@ public class AuthController {
 				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			}
 
-			user.setEnabled(true);
+			user.setEnabled(true); 
 			userService.saveOneUser(user);
 
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getEmail(),

@@ -3,7 +3,6 @@ package az.risk.SimpleBankAssistant.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,99 +25,75 @@ public class CustomerAccountService {
 
 	@Autowired
 	public CustomerAccountService(CustomerAccountRepository customerAccountRepository,
-			CurrencyConverterUtil currencyConverterUtil, CustomerAccountHistoryRepository historyRepository) {
+								   CurrencyConverterUtil currencyConverterUtil,
+								   CustomerAccountHistoryRepository historyRepository) {
 		this.customerAccountRepository = customerAccountRepository;
 		this.currencyConverterUtil = currencyConverterUtil;
 		this.historyRepository = historyRepository;
 	}
 
 	public CustomerAccount createAccount(CustomerAccount customerAccount) {
-
 		customerAccount.setIban(IbanGenerator.generateRandomIban());
 		customerAccount.setAvailableBalance(BigDecimal.ZERO);
-		customerAccount.setUser(getUser());
+		customerAccount.setUser(getAuthenticatedUsername());
 		return customerAccountRepository.save(customerAccount);
 	}
 
 	public CustomerAccount updateBalance(Long accountId, BigDecimal amount) {
-		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
+		CustomerAccount account = customerAccountRepository.findById(accountId)
+				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
 
-		if (accountOptional.isPresent()) {
-			CustomerAccount account = accountOptional.get();
-			BigDecimal currentBalance = account.getAvailableBalance() != null ? account.getAvailableBalance()
-					: BigDecimal.ZERO;
-			BigDecimal newBalance = currentBalance.add(amount);
-			account.setAvailableBalance(newBalance);
+		BigDecimal newBalance = account.getAvailableBalance().add(amount);
+		account.setAvailableBalance(newBalance);
+		customerAccountRepository.save(account);
 
-			customerAccountRepository.save(account);
+		saveAccountHistory(account, amount, account.getCurrency(), "BALANCE_UPDATE");
 
-			// Tarixçəyə əlavə et
-			CustomerAccountHistory history = new CustomerAccountHistory();
-			history.setIban(account.getIban());
-			history.setAmount(amount);
-			history.setCurrency(account.getCurrency());
-			history.setUser(account.getUser());
-			history.setOperationType("BALANCE_UPDATE");
-			history.setOperationDate(LocalDateTime.now());
-			historyRepository.save(history);
-
-			return account;
-		}
-
-		throw new RuntimeException("Hesab tapılmadı");
+		return account;
 	}
 
 	public BigDecimal getBalance(Long accountId) {
-		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
-		if (accountOptional.isPresent()) {
-			return accountOptional.get().getAvailableBalance();
-		}
-		throw new RuntimeException("Hesab tapılmadı");
+		CustomerAccount account = customerAccountRepository.findById(accountId)
+				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
+		return account.getAvailableBalance();
 	}
 
 	public void closeAccount(Long accountId) {
-		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
-		if (accountOptional.isPresent()) {
-			CustomerAccount account = accountOptional.get();
-			account.setIsAccountActive(false); // Hesab aktiv deyil olaraq qeyd edilir
-			customerAccountRepository.save(account);
-		} else {
-			throw new RuntimeException("Hesab tapılmadı");
-		}
+		CustomerAccount account = customerAccountRepository.findById(accountId)
+				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
+		account.setIsAccountActive(false);
+		account.setClosedDate(LocalDateTime.now());
+		customerAccountRepository.save(account);
 	}
 
-	public BigDecimal convertCurrency(Long accountId, String toCurrency) {
-		Optional<CustomerAccount> accountOptional = customerAccountRepository.findById(accountId);
+	public BigDecimal convertCurrency(Long accountId, String toCurrencyStr) {
+		CustomerAccount account = customerAccountRepository.findById(accountId)
+				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
 
-		if (accountOptional.isPresent()) {
-			CustomerAccount account = accountOptional.get();
+		String fromCurrency = account.getCurrency().name();
+		BigDecimal convertedAmount = currencyConverterUtil.convert(account.getAvailableBalance(), fromCurrency, toCurrencyStr);
 
-			String fromCurrency = account.getCurrency().name(); // Mövcud valyuta
+		account.setAvailableBalance(convertedAmount);
+		account.setCurrency(CurrencyType.valueOf(toCurrencyStr.toUpperCase()));
+		customerAccountRepository.save(account);
 
-			BigDecimal currentBalance = account.getAvailableBalance();
-			BigDecimal convertedAmount = currencyConverterUtil.convert(currentBalance, fromCurrency, toCurrency);
+		saveAccountHistory(account, convertedAmount, account.getCurrency(), "CURRENCY_CONVERSION");
 
-			account.setAvailableBalance(convertedAmount);
-			account.setCurrency(CurrencyType.valueOf(toCurrency.toUpperCase()));
-			customerAccountRepository.save(account);
-
-			// Tarixçəyə əlavə et
-			CustomerAccountHistory history = new CustomerAccountHistory();
-			history.setIban(account.getIban());
-			history.setAmount(convertedAmount);
-			history.setCurrency(CurrencyType.valueOf(toCurrency.toUpperCase()));
-			history.setUser(account.getUser());
-			history.setOperationType("CURRENCY_CONVERSION");
-			history.setOperationDate(LocalDateTime.now());
-			historyRepository.save(history);
-
-			return convertedAmount;
-		}
-
-		throw new RuntimeException("Hesab tapılmadı");
+		return convertedAmount;
 	}
 
-	private String getUser() {
+	private void saveAccountHistory(CustomerAccount account, BigDecimal amount, CurrencyType currency, String operationType) {
+		CustomerAccountHistory history = new CustomerAccountHistory();
+		history.setIban(account.getIban());
+		history.setAmount(amount);
+		history.setCurrency(currency);
+		history.setUser(account.getUser());
+		history.setOperationType(operationType);
+		history.setOperationDate(LocalDateTime.now());
+		historyRepository.save(history);
+	}
+
+	private String getAuthenticatedUsername() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
@@ -127,8 +102,7 @@ public class CustomerAccountService {
 	}
 
 	public List<CustomerAccountHistory> getAccountHistory() {
-		String username = getUser();
+		String username = getAuthenticatedUsername();
 		return historyRepository.findByUser(username);
 	}
-
 }

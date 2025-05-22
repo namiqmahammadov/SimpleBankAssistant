@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         servers = {
                 @Server(
                         description = "Local ENV",
-                        url = "http://localhost:1121"
+                        url = "https://simplebankassistant-2.onrender.com"
                 )
         },
         security = {

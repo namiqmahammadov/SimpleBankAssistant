@@ -1,7 +1,12 @@
+# 1. Build mərhələsi
 FROM maven:3-eclipse-temurin-17 AS build
-COPY • •
-RUN uvn clean package - DskipTests
-FROM eclipse- tenurin: 17-alpine
---from-build /target/*. jar simplebankassistant. jar
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# 2. Run mərhələsi
+FROM eclipse-temurin:17-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar simplebankassistant.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar", simplebankassistant. jar*]
+ENTRYPOINT ["java", "-jar", "simplebankassistant.jar"]

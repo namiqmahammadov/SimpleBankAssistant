@@ -75,6 +75,7 @@ public class SecurityConfig {
 	        .authorizeRequests()
 	            // Swagger və OpenAPI üçün istisnalar əlavə edilir
 	            .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+	            .antMatchers("/").permitAll()
 	            .antMatchers("/auth/**").permitAll()
 	            .antMatchers("/api/chatbot/**").authenticated()
 	            .anyRequest().authenticated();

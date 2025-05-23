@@ -15,12 +15,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 description = "Description",
                 title = "SimpleBAnk App Documentation"
         ),
-        servers = {
-                @Server(
-                        description = "Local ENV",
-                        url = "http://localhost:1121"
-                )
-        },
+      
+       
         security = {
                 @SecurityRequirement(
                         name = "bearerAuth"

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import az.risk.SimpleBankAssistant.entity.User;
@@ -13,10 +14,10 @@ import az.risk.SimpleBankAssistant.repository.UserRepository;
 public class UserService {
 
 	private UserRepository userRepository;
-
-	public UserService(UserRepository userRepository) {
+	private PasswordEncoder passwordEncoder;
+	public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
-
+this.passwordEncoder=passwordEncoder;
 	}
 
 	public List<User> getAllUsers() {
@@ -37,8 +38,8 @@ public class UserService {
 			User foundUser = user.get();
 			foundUser.setFullname(newUser.getFullname());
 			foundUser.setEmail(newUser.getEmail());
-			foundUser.setPassword(newUser.getPassword());
-
+			foundUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            foundUser.setRole(newUser.getRole());
 			userRepository.save(foundUser);
 			return foundUser;
 		} else

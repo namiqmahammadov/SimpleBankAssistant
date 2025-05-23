@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class MoneyTransferController {
 	private OtpService otpService;
 
 	private TransferRequest pendingTransferRequest;
-
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	public ResponseEntity<String> initiateTransfer(@RequestBody TransferRequest dto) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -40,7 +41,7 @@ public class MoneyTransferController {
 
 		return ResponseEntity.ok("OTP kodu göndərildi. OTP təsdiqindən sonra transfer həyata keçiriləcək.");
 	}
-
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/verify-otp")
 	public ResponseEntity<TransferResponse> verifyOtp(@RequestBody Map<String, String> request) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();

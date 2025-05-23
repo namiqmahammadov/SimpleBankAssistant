@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,7 +21,9 @@ import az.risk.SimpleBankAssistant.security.JwtAuthenticationFilter;
 import az.risk.SimpleBankAssistant.service.UserDetailsServiceImpl;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity 
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 public class SecurityConfig {
 
 	private final UserDetailsServiceImpl userDetailsService;

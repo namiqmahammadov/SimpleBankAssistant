@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,19 +25,19 @@ public class HistoryController {
 	private LoanService loanService;
 	@Autowired
 	private MoneyTransferService moneyTransferService;
-
+	@PreAuthorize("hasRole('ADMIN')||hasRole('USER')")
 	@GetMapping("/transfer")
 	public List<MoneyTransfer> getTransferHistory() {
 
 		return moneyTransferService.getTransferHistory();
 
 	}
-
+	@PreAuthorize("hasRole('ADMIN')||hasRole('USER')")
 	@GetMapping("/customer")
 	public List<CustomerAccountHistory> getAccountHistory() {
 		return customerAccountService.getAccountHistory();
 	}
-
+	@PreAuthorize("hasRole('ADMIN')||hasRole('USER')")
 	@GetMapping("/loan")
 	public ResponseEntity<?> getLoanHistory() {
 		return loanService.getLoanHistory();

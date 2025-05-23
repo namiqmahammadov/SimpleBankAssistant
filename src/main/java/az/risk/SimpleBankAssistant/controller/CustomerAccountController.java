@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,31 +34,31 @@ public class CustomerAccountController {
         this.customerAccountService = customerAccountService;
     }
 
-   
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerAccount createAccount(@RequestBody CustomerAccount customerAccount) {
         return customerAccountService.createAccount(customerAccount);
     }
 
-   
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{accountId}/balance")
     public CustomerAccount updateBalance(@PathVariable Long accountId,@RequestBody BalanceUpdateRequest request) {
         return customerAccountService.updateBalance(accountId, request.getAmount());
     }
 
-  
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{accountId}/balance")
     public BigDecimal getBalance(@PathVariable Long accountId) {
         return customerAccountService.getBalance(accountId);
     }
 
-
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/{accountId}")
     public void closeAccount(@PathVariable Long accountId) {
         customerAccountService.closeAccount(accountId);
     }
-
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{accountId}/convert")
     public BigDecimal convertCurrency(@PathVariable Long accountId,
                                       @RequestBody CurrencyConversionRequest request) {

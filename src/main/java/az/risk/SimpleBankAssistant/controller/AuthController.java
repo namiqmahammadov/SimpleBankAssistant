@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import az.risk.SimpleBankAssistant.entity.RefreshToken;
 import az.risk.SimpleBankAssistant.entity.User;
+import az.risk.SimpleBankAssistant.enums.Role;
 import az.risk.SimpleBankAssistant.requests.RefreshRequest;
 import az.risk.SimpleBankAssistant.requests.UserRequest;
 import az.risk.SimpleBankAssistant.responses.AuthResponse;
@@ -50,6 +52,7 @@ public class AuthController {
 		this.refreshTokenService = refreshTokenService;
 		this.otpService = otpService;
 	}
+	
 
 	@PostMapping("/login")
 	public AuthResponse login(@RequestBody UserRequest loginRequest) {
@@ -79,6 +82,7 @@ public class AuthController {
 		user.setEmail(registerRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 		user.setEnabled(false);
+		user.setRole(Role.USER);
 		userService.saveOneUser(user);
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -128,38 +132,24 @@ public class AuthController {
 	}
 
 	@PostMapping("/verify-otp")
-	public ResponseEntity<AuthResponse> verifyOtp(@RequestBody Map<String, String> request) {
-		String email = request.get("email");
-		String code = request.get("code");
+	public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> request) {
+	    String email = request.get("email");
+	    String code = request.get("code");
 
-		AuthResponse response = new AuthResponse();
-		if (otpService.verifyOtp(email, code)) {
-			User user = userService.getOneUserByEmail(email);
-			if (user == null) {
-				response.setMessage("İstifadəçi tapılmadı.");
-				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-			}
+	    if (otpService.verifyOtp(email, code)) {
+	        User user = userService.getOneUserByEmail(email);
+	        if (user == null) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("İstifadəçi tapılmadı.");
+	        }
 
-			user.setEnabled(true); 
-			userService.saveOneUser(user);
+	        user.setEnabled(true);
+	        userService.saveOneUser(user);
 
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getEmail(),
-					user.getPassword());
-			Authentication auth = authenticationManager.authenticate(authToken);
-			SecurityContextHolder.getContext().setAuthentication(auth);
-
-			String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-
-			response.setMessage("OTP təsdiqləndi, giriş uğurludur.");
-			response.setAccessToken("Bearer " + jwtToken);
-			response.setRefreshToken(refreshTokenService.createRefreshToken(user));
-			response.setUserId(user.getId());
-
-			return ResponseEntity.ok(response);
-		} else {
-			response.setMessage("OTP kod yalnış və ya vaxtı keçib.");
-			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-		}
+	        return ResponseEntity.status(HttpStatus.ACCEPTED).body("OTP təsdiqləndi, istifadəçi aktivləşdirildi.");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OTP kod yalnış və ya vaxtı keçib.");
+	    }
 	}
+
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,21 +30,22 @@ public class UserController {
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public List<UserResponse> getAllUsers() {
 		return userService.getAllUsers().stream().map(u -> new UserResponse(u)).toList();
 	}
-
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	public ResponseEntity<Void> createUser(@RequestBody User newUser) {
 		User user = userService.saveOneUser(newUser);
 		if (user != null)
+			
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
-	@GetMapping("/{userId}")
+   @PreAuthorize("hasRole('USER')")
+	@GetMapping("/{userId}")	
 	public UserResponse getOneUser(@PathVariable Long userId) {
 		User user = userService.getOneUserById(userId);
 		if (user == null) {
@@ -51,7 +53,7 @@ public class UserController {
 		}
 		return new UserResponse(user);
 	}
-
+   @PreAuthorize("hasRole('USER')")
 	@PutMapping("/{userId}")
 	public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
 		User user = userService.updateOneUser(userId, newUser);
@@ -60,7 +62,7 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{userId}")
 	public void deleteOneUser(@PathVariable Long userId) {
 		userService.deleteById(userId);

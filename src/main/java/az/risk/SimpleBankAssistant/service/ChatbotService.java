@@ -1,6 +1,8 @@
 package az.risk.SimpleBankAssistant.service;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
+import az.risk.SimpleBankAssistant.entity.CustomerAccountHistory;
+import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,14 +17,18 @@ public class ChatbotService {
 
     private final CustomerAccountService customerAccountService;
     private final LoanService loanService;
+    private final MoneyTransferService moneyTransferService;
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final String CLASSIFIER_URL = "https://bankbot-2.onrender.com/classify";
 
     @Autowired
-    public ChatbotService(CustomerAccountService customerAccountService, LoanService loanService) {
+    public ChatbotService(CustomerAccountService customerAccountService,
+                          LoanService loanService,
+                          MoneyTransferService moneyTransferService) {
         this.customerAccountService = customerAccountService;
         this.loanService = loanService;
+        this.moneyTransferService = moneyTransferService;
     }
 
     public String handleUserInput(String userInput) {
@@ -53,6 +59,13 @@ public class ChatbotService {
             return "[account currency check]";
         else if (lower.contains("kredit borc") || lower.contains("loan debt"))
             return "[loan debt check]";
+        else if (lower.contains("hesab tarixçə") || lower.contains("account history"))
+            return "[account history]";
+        else if (lower.contains("kredit tarixçə") || lower.contains("loan history"))
+            return "[loan history]";
+        else if (lower.contains("köçürmə tarixçə") ||lower.contains("kocurme tarixce")|| 
+        		lower.contains("история переводов")||lower.contains("transfer history"))
+            return "[transfer history]";
         else
             return "[other]";
     }
@@ -96,6 +109,34 @@ public class ChatbotService {
                     return totalDebt != null ? totalDebt.toString() + " AZN" : "Borc tapılmadı.";
                 }
                 return "Kredit məlumatı alınmadı.";
+
+            case "[account history]":
+                List<CustomerAccountHistory> historyList = customerAccountService.getAccountHistory();
+                if (historyList.isEmpty()) return "Tarixçə boşdur.";
+                CustomerAccountHistory lastOp = historyList.get(historyList.size() - 1);
+                return String.format("Son əməliyyat: %s, %s %s",
+                        lastOp.getOperationType(),
+                        lastOp.getAmount(),
+                        lastOp.getCurrency());
+
+            case "[loan history]":
+                Object loanHistoryObj = loanService.getLoanHistory().getBody();
+                if (!(loanHistoryObj instanceof List<?> loanHistoryList) || loanHistoryList.isEmpty())
+                    return "Kredit tarixçəsi boşdur.";
+                Object lastLoanObj = loanHistoryList.get(loanHistoryList.size() - 1);
+                if (lastLoanObj instanceof Map<?, ?> map) {
+                    return String.format("Son kredit: %s AZN, %s",
+                            map.get("amount"), map.get("date"));
+                }
+                return "Son kredit məlumatı tapılmadı.";
+
+            case "[transfer history]":
+                List<MoneyTransfer> transfers = moneyTransferService.getTransferHistory();
+                if (transfers.isEmpty()) return "Köçürmə tarixçəsi boşdur.";
+                MoneyTransfer lastTransfer = transfers.get(transfers.size() - 1);
+                return String.format("Son köçürmə: %s AZN -> %s",
+                        lastTransfer.getAmount().toPlainString(),
+                        lastTransfer.getReceiverIban());
 
             default:
                 return "";

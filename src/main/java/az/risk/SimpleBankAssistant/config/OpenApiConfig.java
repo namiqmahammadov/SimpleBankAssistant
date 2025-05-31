@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         info = @Info(
                 contact = @Contact(name = "Namiq", email = "namiqms90@gmail.com"),
                 description = "Description",
-                title = "SimpleBAnk App Documentation"
+                title = "SimpleBank App Documentation"
         ),
       
        

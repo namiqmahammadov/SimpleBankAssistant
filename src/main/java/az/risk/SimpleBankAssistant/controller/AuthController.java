@@ -1,10 +1,7 @@
 package az.risk.SimpleBankAssistant.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +17,7 @@ import az.risk.SimpleBankAssistant.entity.RefreshToken;
 import az.risk.SimpleBankAssistant.entity.User;
 import az.risk.SimpleBankAssistant.enums.Role;
 import az.risk.SimpleBankAssistant.requests.LoginRequest;
+import az.risk.SimpleBankAssistant.requests.OtpVerificationRequest;
 import az.risk.SimpleBankAssistant.requests.RefreshRequest;
 import az.risk.SimpleBankAssistant.requests.UserRequest;
 import az.risk.SimpleBankAssistant.responses.AuthResponse;
@@ -74,31 +72,34 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<AuthResponse> register(@RequestBody UserRequest registerRequest) {
-		AuthResponse authResponse = new AuthResponse();
-		if (userService.getOneUserByEmail(registerRequest.getEmail()) != null) {
-			authResponse.setMessage("Username already in use.");
-			return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
-		}
+	    AuthResponse authResponse = new AuthResponse();
 
-		User user = new User();
-		user.setFullname(registerRequest.getFullname());
-		user.setEmail(registerRequest.getEmail());
-		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-		user.setEnabled(false);
-		user.setRole(Role.USER);
-		userService.saveOneUser(user);
+	    if (userService.getOneUserByEmail(registerRequest.getEmail()) != null) {
+	        authResponse.setMessage("Username already in use.");
+	        return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+	    }
 
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-				registerRequest.getEmail(), registerRequest.getPassword());
-		Authentication auth = authenticationManager.authenticate(authToken);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+	    
+	    User user = new User();
+	    user.setFullname(registerRequest.getFullname());
+	    user.setEmail(registerRequest.getEmail());
+	    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+	    user.setEnabled(false); 
+	    user.setRole(Role.USER);
+	    userService.saveOneUser(user);
 
-		authResponse.setMessage("User successfully registered.");
-		authResponse.setAccessToken( jwtToken);
-		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
-		authResponse.setUserId(user.getId());
-		return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+	  
+	    otpService.sendOtpToEmail(user.getEmail());
+
+	   
+	    String refreshToken = refreshTokenService.createRefreshToken(user);
+
+	    authResponse.setMessage("User successfully registered. OTP has been sent to email.");
+	    authResponse.setAccessToken(null);
+	    authResponse.setRefreshToken(refreshToken);
+	    authResponse.setUserId(user.getId());
+
+	    return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
 	}
 
 	@PostMapping("/refresh")
@@ -120,39 +121,34 @@ public class AuthController {
 
 	}
 
-	@PostMapping("/send-otp")
-	public ResponseEntity<String> sendOtp(@RequestBody Map<String, String> request) {
-		String email = request.get("email");
-		User user = userService.getOneUserByEmail(email);
-		if (user == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi qeydiyyatdan keçməyib.");
-		}
-		if (user.isEnabled()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("İstifadəçi artıq aktivdir.");
-		}
-		otpService.sendOtpToEmail(email);
-		return ResponseEntity.ok("OTP kod göndərildi.");
-	}
-
 	@PostMapping("/verify-otp")
-	public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> request) {
-	    String email = request.get("email");
-	    String code = request.get("code");
+	public ResponseEntity<AuthResponse> verifyOtp(@RequestBody OtpVerificationRequest request) {
+	    String code = request.getCode();
+
+	    // Məsələn, email-i təhlükəsizlik kontekstindən götürürük
+	    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+	    AuthResponse response = new AuthResponse();
 
 	    if (otpService.verifyOtp(email, code)) {
 	        User user = userService.getOneUserByEmail(email);
 	        if (user == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("İstifadəçi tapılmadı.");
+	            response.setMessage("İstifadəçi tapılmadı.");
+	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	        }
 
 	        user.setEnabled(true);
 	        userService.saveOneUser(user);
 
-	        return ResponseEntity.status(HttpStatus.ACCEPTED).body("OTP təsdiqləndi, istifadəçi aktivləşdirildi.");
+	        response.setMessage("OTP təsdiqləndi, istifadəçi aktivləşdirildi.");
+	        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	    } else {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OTP kod yalnış və ya vaxtı keçib.");
+	        response.setMessage("OTP kod yalnış və ya vaxtı keçib.");
+	        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 	    }
 	}
 
+	}
 
-}
+
+

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import az.risk.SimpleBankAssistant.entity.RefreshToken;
 import az.risk.SimpleBankAssistant.entity.User;
 import az.risk.SimpleBankAssistant.enums.Role;
+import az.risk.SimpleBankAssistant.requests.LoginRequest;
 import az.risk.SimpleBankAssistant.requests.RefreshRequest;
 import az.risk.SimpleBankAssistant.requests.UserRequest;
 import az.risk.SimpleBankAssistant.responses.AuthResponse;
@@ -57,7 +58,7 @@ public class AuthController {
 	
 
 	@PostMapping("/login")
-	public AuthResponse login(@RequestBody UserRequest loginRequest) {
+	public AuthResponse login(@RequestBody LoginRequest loginRequest) {
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
 				loginRequest.getPassword());
 		Authentication auth = authenticationManager.authenticate(authToken);
@@ -65,7 +66,7 @@ public class AuthController {
 		String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 		User user = userService.getOneUserByEmail(loginRequest.getEmail());
 		AuthResponse authResponse = new AuthResponse();
-		authResponse.setAccessToken("Bearer " + jwtToken);
+		authResponse.setAccessToken( jwtToken);
 		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
 		authResponse.setUserId(user.getId());
 		return authResponse;
@@ -94,7 +95,7 @@ public class AuthController {
 		String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 
 		authResponse.setMessage("User successfully registered.");
-		authResponse.setAccessToken("Bearer " + jwtToken);
+		authResponse.setAccessToken( jwtToken);
 		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
 		authResponse.setUserId(user.getId());
 		return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
@@ -109,7 +110,7 @@ public class AuthController {
 			User user = token.getUser();
 			String jwtToken = jwtTokenProvider.generateJwtTokenByUserId(user.getId());
 			response.setMessage("token successfully refreshed.");
-			response.setAccessToken("Bearer " + jwtToken);
+			response.setAccessToken( jwtToken);
 			response.setUserId(user.getId());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {

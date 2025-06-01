@@ -3,19 +3,17 @@ package az.risk.SimpleBankAssistant.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import az.risk.SimpleBankAssistant.enums.CurrencyType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
@@ -36,10 +34,8 @@ public class CustomerAccount {
 	private Boolean isAccountActive = true;
 	@Column(nullable = false, updatable = false)
 	@CreationTimestamp
-
 	private LocalDateTime openedDate;
-
-	private LocalDateTime closedDate;
-
 	private String user;
+	private LocalDateTime closedDate;
 }
+

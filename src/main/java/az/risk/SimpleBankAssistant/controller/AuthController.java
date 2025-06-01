@@ -124,9 +124,7 @@ public class AuthController {
 	@PostMapping("/verify-otp")
 	public ResponseEntity<AuthResponse> verifyOtp(@RequestBody OtpVerificationRequest request) {
 	    String code = request.getCode();
-
-	    // Məsələn, email-i təhlükəsizlik kontekstindən götürürük
-	    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	    String email = request.getEmail(); // artıq email request-dən gəlir
 
 	    AuthResponse response = new AuthResponse();
 
@@ -141,12 +139,13 @@ public class AuthController {
 	        userService.saveOneUser(user);
 
 	        response.setMessage("OTP təsdiqləndi, istifadəçi aktivləşdirildi.");
-	        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+	        return new ResponseEntity<>(response, HttpStatus.OK);
 	    } else {
 	        response.setMessage("OTP kod yalnış və ya vaxtı keçib.");
 	        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 	    }
 	}
+
 
 	}
 

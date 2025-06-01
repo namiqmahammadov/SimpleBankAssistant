@@ -26,7 +26,7 @@ import az.risk.SimpleBankAssistant.service.CustomerAccountService;
 
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class CustomerAccountController {
 
     private final CustomerAccountService customerAccountService;

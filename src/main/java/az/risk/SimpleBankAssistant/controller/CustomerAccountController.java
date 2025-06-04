@@ -40,6 +40,7 @@ public class CustomerAccountController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerAccount createAccount(@RequestBody CustomerAccount customerAccount) {
+    	System.out.println("dbye melumat elave edildi");
         return customerAccountService.createAccount(customerAccount);
     }
 

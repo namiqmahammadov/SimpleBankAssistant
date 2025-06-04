@@ -1,0 +1,190 @@
+{
+    "//COMMENT 1" : "### About loans:",
+    "[loan products]" : {
+        "AZN" : "Kredit - fiziki və ya hüquqi şəxslərə müəyyən müddətə, müəyyən şərtlərlə və faizlə verilən maliyyə vəsaitidir. Bankımız müştərilərə aşağıdakı kredit məhsullarını təklif edir:\\n-İstehlak krediti (məişət əşyaları, şəxsi ehtiyaclar üçün)\\n-İpoteka krediti (ev almaq üçün)\\n-Biznes krediti (şirkətlər üçün)\\n-Xarici valyuta təminatlı kredit\\n-Əmanətə bağlı kredit\\n-təsərrüfat krediti", 
+        "ENG" : "Credit is a financial resource provided to individuals or legal entities for a certain period, under specific conditions, and with interest. Our bank offers the following credit products to customers:\\n-Consumer loan (for household goods, personal needs)\\n-Mortgage loan (for buying a house)\\n-Business loan (for companies)\\n-Foreign currency secured loan\\n-Deposit-backed loan\\n-Agricultural loan",
+        "RUS" : "Кредит - это финансовые средства, предоставляемые физическим или юридическим лицам на определённый срок, на определённых условиях и с процентами. Наш банк предлагает клиентам следующие кредитные продукты:\\n-Потребительский кредит (на бытовые товары, личные нужды)\\n-Ипотечный кредит (для покупки жилья)\\n-Бизнес-кредит (для компаний)\\n-Кредит с обеспечением в иностранной валюте\\n-Кредит, обеспеченный депозитом\\n-Сельскохозяйственный кредит"
+    },
+    "[loan rates]" : {
+        "AZN" : "Bank kreditlər üçün minimal sənəd tələbləri, münasib faiz dərəcələri və ödəmə şərtləri tətbiq edir. Kredit məhsulları üçün tələb olunan şərtlər kredit növünə bağlı olaraq dəyişir:\\n-Ehtiyac krediti üçün illik 15%-dən başlayan faiz dərəcələri tətbiq olunur. Ehtiyac krediti rəsmi gəliri olan şəxslərə və eyni zamanda digər banklarda krediti olanlara da verilə bilir. Ehtiyac kreditinə müraciət zamanı sadəcə şəxsiyyət vəsiqəsinin FİN-kodu yetərlidir.\\n-Yeni mənzil sahibi olmaq istəyənlər üçün Bank tərəfindən daxili ipoteka krediti təqdim edilir. Əmanət təminatlı kreditlər üçün bankda əmanət yerləşdirməyiniz tələb olunur.\\n-Təminatlı manat krediti üçün USD və ya EUR valyutasında sığorta depozitinə sahib olmağınız tələb olunur.", 
+        "ENG" : "The bank applies minimal document requirements, favorable interest rates, and payment terms for loans. The conditions required for loan products vary depending on the type of loan:\\n-For consumer loans, interest rates start from 15% annually. Consumer loans can be granted to individuals with official income as well as those who have loans in other banks. Only the FIN code of the ID card is required when applying for a consumer loan.\\n-For those who want to become new homeowners, the bank offers domestic mortgage loans. For deposit-secured loans, you are required to place a deposit in the bank.\\n-For secured manat loans, you must have an insurance deposit in USD or EUR currency.",
+        "RUS" : "Банк применяет минимальные требования к документам, выгодные процентные ставки и условия оплаты для кредитов. Требования к кредитным продуктам зависят от типа кредита:\\n-Для потребительских кредитов применяются процентные ставки от 15% годовых. Потребительские кредиты могут быть предоставлены лицам с официальным доходом, а также тем, кто имеет кредиты в других банках. При подаче заявки на потребительский кредит достаточно предоставить FIN-код удостоверения личности.\\n-Для тех, кто хочет стать новым владельцем жилья, банк предлагает внутренние ипотечные кредиты. Для кредитов с обеспечением депозитом требуется размещение депозита в банке.\\n-Для обеспеченных кредитов в манатах требуется наличие страхового депозита в валюте USD или EUR."
+    },
+    "[consumer loan]" : {
+        "AZN" : "İstehlak krediti, günlük ehtiyacları qarşılamaq üçün fiziki şəxslərə müxtəlif məqsədlərlə bank tərəfindən təklif edilən kredit məhsuludur. Şəxsi ehtiyaclarınızı zamanında qarşılamağınıza imkan tanıyan bu kredit məhsulu üçün bank tərəfindən tətbiq edilən maksimum məbləğ limiti 30 000 AZN müəyyən olunmuşdur. Hətta digər banklarda krediti olan şəxslərin də rahatlıqla əldə edə biləcəyi istehlak kreditini almaq üçün rəsmi gəlirə sahib bütün şəxslər müraciət edə bilər.", 
+        "ENG" : "Consumer credit is a loan product offered by the bank to individuals for various purposes to meet daily needs. This credit product, which allows you to timely meet your personal needs, has a maximum loan amount limit of 30,000 AZN set by the bank. Even individuals who have loans at other banks can easily obtain this consumer loan, and all persons with official income can apply.",
+        "RUS" : "Потребительский кредит - это кредитный продукт, предлагаемый банком физическим лицам для различных целей с целью удовлетворения ежедневных потребностей. Этот кредитный продукт, который позволяет своевременно удовлетворять личные потребности, имеет установленный банком максимальный лимит суммы в размере 30 000 AZN. Даже лица, имеющие кредиты в других банках, могут без труда получить этот потребительский кредит, и подать заявку могут все лица с официальным доходом."
+    },
+    "[loan for fermers]" : {
+        "AZN" : "Bank tərəfindən fərdi sahibkarlar və hüquqi şəxslərə təklif edilən təsərrüfat krediti sahibkarlara fermer təsərüffatlarını inkişaf etdirməkdə köməklik edir.  Maksimum 100 000 AZN-dək əldə edə biləcəyiniz kredit üçün 16%-dən başlayan illik faiz dərəcələri tətbiq olunur. Kreditin verilməsi ilə bağlı tələb olunan şərtləri aşağıdakı kimidir:\\n-Yaş həddi: 20-dən yuxarı\\n-VÖEN\\n-Aqrar sahədə fəaliyyət muddəti: min. 12 ay\\n-Mikro kredit məhsulunu əldə edə biləcəyiniz rayon və şəhərlər – Abşeron, Bakı, Bərdə, Gəncə, İmişli, Qəbələ, Lənkəran, Masallı, Salyan, Sumqayıt və Tovuz. Mikro Biznes krediti satışını həyata keçirən filiallar şəbəkəsi mütəmadi olaraq genişlənir.", 
+        "ENG" : "The agricultural loan offered by the bank to individual entrepreneurs and legal entities helps entrepreneurs develop their farming activities. Interest rates start from 16% annually for loans up to a maximum of 100,000 AZN. The requirements for obtaining the loan are as follows:\\n-Age limit: over 20\\n-Taxpayer Identification Number (TIN)\\n-Minimum 12 months of activity in the agricultural sector\\n-Regions and cities where you can obtain the microcredit product: Absheron, Baku, Barda, Ganja, Imishli, Gabala, Lankaran, Masalli, Salyan, Sumgayit, and Tovuz. The network of branches offering micro business loans is regularly expanding.",
+        "RUS" : "Кредит для сельского хозяйства, предлагаемый банком индивидуальным предпринимателям и юридическим лицам, помогает предпринимателям развивать фермерское хозяйство. Процентные ставки начинаются от 16% годовых для кредитов до 100 000 AZN. Требования для получения кредита следующие:\\n-Возраст: старше 20 лет\\n-ИНН (идентификационный номер налогоплательщика)\\n-Минимум 12 месяцев деятельности в аграрном секторе\\n-Районы и города, где доступен микрокредитный продукт: Абшерон, Баку, Барда, Гянджа, Имишли, Габала, Лянкяран, Масаллы, Сальян, Сумгайыт и Товуз. Сеть филиалов, предоставляющих микробизнес-кредиты, постоянно расширяется."
+    },
+    "[loan without guarantor]" : {
+        "AZN" : "Bank tərəfindən münasib faiz dərəcələri ilə təklif olunan və nağd pul ehtiyaclarınızı sürətli şəkildə qarşılamağınıza imkan tanıyan istehlak krediti xüsusi hallar istisna olmaqla zaminsiz şəkildə təqdim olunur. Zaminsiz kredit əldə etməyinizə şərait yaradan bu kredit məhsulu üçün illik 15%-dən başlayan faiz dərəcələri tətbiq edilir. Krediti sadəcə şəxsiyyət vəsiqənizin FİN kodunu daxil etməklə onlayn şəkildə sifariş edə bilərsiniz. Kredit müraciətinin təsdiqlənməsi üçün siz yerində xidmət və ya videozənglə təsdiqləmə xidmətlərindən faydalana bilərsiniz.", 
+        "ENG" : "The consumer loan offered by the bank at favorable interest rates allows you to quickly meet your cash needs and is provided without a guarantor, except for special cases. This loan product, which enables you to obtain a loan without a guarantor, applies interest rates starting from 15% annually. You can order the loan online simply by entering the FIN code from your ID card. To approve your loan application, you can use on-site service or video call verification services.",
+        "RUS" : "Потребительский кредит, предлагаемый банком по выгодным процентным ставкам, позволяет быстро удовлетворить ваши потребности в наличных и предоставляется без поручителя, за исключением особых случаев. Для этого кредитного продукта, который позволяет получить кредит без поручителя, применяется процентная ставка от 15% годовых. Кредит можно оформить онлайн, просто введя FIN-код из вашего удостоверения личности. Для подтверждения заявки на кредит вы можете воспользоваться услугами выездного обслуживания или видеозвонка."
+    },
+    "[loan with mortgaging house]" : {
+        "AZN" : "Bankın təqdim etdiyi Daşınmaz əmlak təminatlı kredit məhsulu daşınmaz əmlak girov qoymaqla pul krediti əldə etməyinizə imkan verir. 5 il müddətinədək verilən kreditin məbləği daşınmaz əmlakın maksimal 65%-i həcmində müəyyən olunur. Kredit almaq üçün yaşayış evi, bağ evi, binada mənzil (1970-ci ildən yeni tikilən) və qeyri yaşayış sahəsi girov olaraq qoyula bilər.", 
+        "ENG" : "Bank’s Real Estate Secured Loan product allows you to obtain a cash loan by pledging real estate as collateral. The loan amount, granted for up to 5 years, is determined as a maximum of 65% of the value of the real estate. To obtain the loan, a residential house, summer house, apartment in a building (constructed after 1970), or non-residential space can be pledged as collateral.",
+        "RUS" : "Кредитный продукт банка с обеспечением недвижимостью позволяет получить наличный кредит под залог недвижимости. Сумма кредита, выдаваемого на срок до 5 лет, определяется в размере до 65% от стоимости недвижимости. Для получения кредита в залог можно предоставить жилой дом, дачу, квартиру в доме (построенном после 1970 года) или нежилое помещение."
+    },
+    "[online loan]" : {
+        "AZN" : "Bankda uzun növbələr gözləmədən sürətli şəkildə kredit əldə etmək istəyən şəxslər üçün online kredit xidməti müştərilərə təqdim olunur. Online kredit almaq üçün bankın rəsmi saytına daxil olaraq online sifariş formasını doldurmağınız yetərlidir. Nağd pul krediti almaq üçün şəxsiyyət vəsiqənizin FİN-kodunu daxil edərək müraciəti tamamlamağınız kifayətdir. Müraciətiniz qeydə alındıqdan sonra Bank əməkdaşları tərəfindən sizinlə əlaqə saxlanılacaq və məlumatların doğruluğu yoxlandıqdan sonra kredit müraciətiniz təsdiqlənəcək.", 
+        "ENG" : "Bank offers an online loan service for individuals who want to quickly obtain a loan without waiting in long queues. To apply for an online loan, simply visit the bank’s official website and fill out the online application form. To get a cash loan, you only need to complete the application by entering the FIN code from your ID card. After your application is registered, bank representatives will contact you, and once the information is verified, your loan application will be approved.",
+        "RUS" : "Банк предоставляет услугу онлайн-кредита для тех, кто хочет быстро получить кредит без долгого ожидания в очередях. Чтобы оформить онлайн-кредит, достаточно зайти на официальный сайт банка и заполнить онлайн-заявку. Для получения наличного кредита нужно только ввести FIN-код из вашего удостоверения личности и завершить заявку. После регистрации вашей заявки с вами свяжутся сотрудники банка, и после проверки данных ваша заявка на кредит будет одобрена."
+    },
+    "[loan with pension card]" : {
+        "AZN" : "Bank pensiyaçılar üçün gündəlik təlabat krediti, ipoteka kreditləri, təminatlı manat krediti, əmanət təminatlı kredit və daşınmaz əmlak krediti məhsullarını təqdim edir. Pensiya kartı ilə nağd kredit əldə etmək üçün Bank və ya istənilən digər bankın təqaüd kartına sahib olmağınız kifayətdir.", 
+        "ENG" : "Bank offers daily needs loans, mortgage loans, secured manat loans, deposit-secured loans, and real estate loan products for pensioners. To obtain a cash loan with a pension card, it is sufficient to have a pension card from the bank or any other bank.",
+        "RUS" : "Банк предлагает пенсионерам кредиты на ежедневные нужды, ипотечные кредиты, обеспеченные кредиты в манатах, кредиты с обеспечением депозитом и кредиты на недвижимость. Для получения наличного кредита по пенсионной карте достаточно иметь пенсионную карту банка или любого другого банка."
+    },
+    "[loan to housewives]" : {
+        "AZN" : "Bank evdar xanımlara nağd pul ehtiyaclarını qarşılamaq üçün Gündəlik tələbat kreditini təklif edir. Hissə-hissə ödəmə imkanı və aşağı faiz dərəcələri ilə gündəlik  təlabatlarınızı qarşılamaq üçün ən çox istifadə olunan bank məhsuludur.  Rəsmi gəlirli şəxslərin müraciət edə biləcəyi kredit üçün maksimal məbləğ 30 000 AZN-dir.  Kredit üçün illik 15% illik faiz dərəcələri tətbiq edilir. Kredit üçün şəxsiyyət vəsiqəsinin FİN kodunu daxil etməklə onlayn şəkildə müraciət edə bilərsiniz.", 
+        "ENG" : "Bank offers the Daily Needs Loan for housewives to meet their cash needs. With the possibility of installment payments and low interest rates, it is the most commonly used bank product to cover your daily expenses. The maximum amount for this loan, which can be applied for by individuals with official income, is 30,000 AZN. An annual interest rate of 15% is applied to the loan. You can apply for the loan online by entering the FIN code from your ID card.",
+        "RUS" : "Банк предлагает кредит «Ежедневные нужды» для домохозяек, чтобы удовлетворить их потребности в наличных. С возможностью поэтапных платежей и низкими процентными ставками это самый часто используемый банковский продукт для покрытия повседневных расходов. Максимальная сумма кредита для лиц с официальным доходом составляет 30 000 AZN. По кредиту применяется годовая процентная ставка в размере 15%. Вы можете подать заявку на кредит онлайн, введя код FIN из вашего удостоверения личности."
+    },
+    "[loan without official job]" : {
+        "AZN" : "Bank rəsmi iş yeri olmayan şəxslər üçün Əmanət təminatlı kredit və Təminatlı manat krediti məhsullarını təklif edir. Rəsmi iş yeri tələbi olmadan verilən bu kreditlər Bankda depozit hesabına sahib şəxslər üçün nəzərdə tutulmuşdur. Tək şəxsiyyət vəsiqəsini təqdim etməklə əldə edilən bu kredit məhsulları üçün minimum yaş limiti 18-dir.", 
+        "ENG" : "The bank offers Deposit-secured loans and Secured manat loans for individuals without official employment. These loans, provided without the requirement of official employment, are intended for those who have a deposit account with the bank. The minimum age limit to obtain these loan products, which can be acquired by presenting only an ID card, is 18.",
+        "RUS" : "Банк предлагает кредиты с обеспечением депозитом и обеспеченные кредиты в манатах для лиц без официального места работы. Эти кредиты, выдаваемые без требования официального трудоустройства, предназначены для клиентов, имеющих депозитный счет в банке. Минимальный возраст для получения этих кредитных продуктов, которые можно оформить, предъявив только удостоверение личности, составляет 18 лет."
+    },
+    "[interest calculator]" : {
+        "AZN" : "Bankın kredit kalkulyatoru ilə əldə etmək istədiyiniz kredit məhsulunun faiz dərəcələrini, sizə ayrılacaq kredit məbləğini hesablaya bilərsiniz. Faiz hesablama kalkulyatorundan istifadə qaydası olduqca asandır. Əldə etmək istədiyiniz kredit növünü seçib, kredit miqdarını, kredit müddətini qeyd etməniz kifayətdir. Sadə istifadə qaydasına sahib kredit kalkulyatorundan istifadə edərək kredit faizlərini hesablayın.", 
+        "ENG" : "With the bank’s loan calculator, you can calculate the interest rates and the loan amount that will be allocated to you for the loan product you want to obtain. The usage of the interest calculation calculator is quite simple. You just need to select the type of loan you want, enter the loan amount and the loan term. Use the loan calculator with its simple interface to calculate the loan interest rates.",
+        "RUS" : "С помощью кредитного калькулятора банка вы можете рассчитать процентные ставки и сумму кредита, которая будет вам предоставлена для выбранного кредитного продукта. Использовать калькулятор процентов очень просто. Вам достаточно выбрать тип кредита, указать сумму и срок кредита. Используйте кредитный калькулятор с простым интерфейсом для расчёта процентных ставок по кредиту."
+    },
+
+    "//COMMENT 2" : "### About mortgage:",
+    "[mortgage loan rates]" : {
+        "AZN" : "İpoteka - bank tərəfindən daşınmaz əmlakın girov qoyulması yolu ilə verilən, uzun müddətə və adətən aşağı faizlə təmin edilən kredit növüdür. Bank ev sahibi olmaq istəyən hər kəs üçün sərfəli şərtlərlə ipoteka kreditləri təklif edir. Daxili və Dövlət ipotekası üçün illik 8%-dən başlayan, regionlarda yaşayan əhali üçün nəzərdə tutulan Regionlarda Sosial İpoteka üçün 6%-dən,  güzəştli şəxslərə təqdim edilən MİDA ipotekası üçün 4%-dən başlayan faizlər tətbiq edilir.", 
+        "ENG" : "Mortgage is a type of loan provided by the bank secured by real estate collateral, usually for a long term and at a low interest rate. The bank offers mortgage loans on favorable terms for anyone who wants to become a homeowner. For domestic and state mortgages, interest rates start from 8% annually, for the Social Mortgage intended for people living in regions, rates start from 6%, and for the concessional MIDA mortgage offered to privileged individuals, rates start from 4%.",
+        "RUS" : "Ипотека - это вид кредита, предоставляемого банком под залог недвижимости, обычно на длительный срок и по низкой процентной ставке. Банк предлагает ипотечные кредиты на выгодных условиях для всех, кто хочет стать владельцем жилья. Для внутренних и государственных ипотек применяется процентная ставка от 8% годовых, для социальной ипотеки, предназначенной для жителей регионов — от 6%, а для льготной ипотеки МИДА, предоставляемой льготным категориям, — от 4%."
+    },
+    "[preferential mortgage]" : {
+        "AZN" : "Bank güzəştli kateqoriyaya aid olan şəxslər üçün nəzərdə tutulan Dövlət ipotekası və MİDA ipoteka kreditlərini təklif edir. Güzəştli kreditlər şəhid ailəsinin üzvü, Milli Qəhrəman (özü, əri/arvadı, övladları), Məcburi köçkün və ya ona bərabər tutulan şəxs, Elmlər doktoru elmi dərəcəsi olan şəxs, ən azı 3 il elmi vəzifədə işləyən elmi işçilər, ən azı 3 il daxili işlər orqanlarında xidmət keçən xüsusi rütbəsi olan şəxs, ən azı 15 il dövlət ümumtəhsil məktəbində müəllim işləyən şəxs və s. şəxlərə verilir.", 
+        "ENG" : "Bank offers State Mortgage and MIDA Mortgage loans intended for individuals belonging to privileged categories. Preferential loans are granted to members of families of martyrs, National Heroes (themselves, spouses, children), internally displaced persons or those equated to them, individuals with a Doctor of Sciences degree, scientific workers who have worked in scientific positions for at least 3 years, persons with special ranks who have served in internal affairs bodies for at least 3 years, teachers who have worked at least 15 years in state general education schools, and others.",
+        "RUS" : "Банк предлагает государственные ипотечные кредиты и ипотечные кредиты MIDA, предназначенные для лиц, относящихся к льготным категориям. Льготные кредиты предоставляются членам семей погибших, Национальным героям (самим, супругам, детям), вынужденным переселенцам или приравненным к ним лицам, обладателям ученой степени доктора наук, научным работникам с не менее чем 3-летним стажем работы в научных должностях, лицам со специальными званиями, проходившим службу в органах внутренних дел не менее 3 лет, учителям, проработавшим не менее 15 лет в государственных общеобразовательных школах и другим категориям."
+    },
+    "[social mortgage]" : {
+        "AZN" : "Sosial ipoteka krediti regionlarda yaşayan və ya işləyən əhalinin daşınmaz əmlak əldə etməsini asanlaşdırma üçün nəzərdə tutulan kredit məhsuludur. Komissiyasız şəkildə təklif edilən kreditdən Bakı, Abşeron, Sumqayıt zonası istisna olmaqla digər regionlardan əldə etmək mümkündür. Kredit iş yeri regionda olan, minimum 18 maksimum 35 yaş həddində müştərilər üçün nəzərdə tutulub.", 
+        "ENG" : "The Social Mortgage loan is a credit product designed to facilitate real estate acquisition for people living or working in the regions. The loan, offered without commission, is available from regions other than Baku, Absheron, and Sumgait zones. The loan is intended for customers whose workplace is in the region and who are between 18 and 35 years old.",
+        "RUS" : "Социальный ипотечный кредит — это кредитный продукт, предназначенный для облегчения приобретения недвижимости для жителей или работающих в регионах. Кредит, предлагаемый без комиссии, доступен из регионов за исключением Баку, Абшерона и зоны Сумгаита. Кредит предназначен для клиентов с рабочим местом в регионе в возрасте от 18 до 35 лет."
+    },
+    "[mortgage loans for youngs]" : {
+        "AZN" : "Bank gənc ailələr üçün güzəştli Daxili ipoteka, Dövlət ipotekası və MİDA ipoteka kredit məhsullarını təklif edir.", 
+        "ENG" : "Bank offers preferential Internal Mortgage, State Mortgage, and MIDA Mortgage loan products for young families.",
+        "RUS" : "Банк предлагает льготные продукты по внутренней ипотеке, государственной ипотеке и ипотеке MIDA для молодых семей."
+    },
+
+    "//COMMENT 3" : "### About deposits:",
+    "[deposit rates]" : {
+        "AZN" : "Depozit məhsulları bank hesabınıza AZN və USD olmaqla iki valyutada nağd pul yerləşdirməyinizə imkan tanıyır. Kapital depoziti üçün faiz dərəcəsi 8%; müddətsiz depozit üçün müvafiq olaraq AZN valyutasında 1%, USD valyutasında 0.01% təyin olunmuşdur.", 
+        "ENG" : "Deposit products allow you to place cash in your bank account in two currencies: AZN and USD. The interest rate for Kapital deposit is 8%; for demand deposits, it is set at 1% for AZN and 0.01% for USD.",
+        "RUS" : "Депозитные продукты позволяют размещать наличные в вашем банковском счете в двух валютах: AZN и USD. Процентная ставка по депозиту Kapital составляет 8%; по бессрочным депозитам — 1% в AZN и 0,01% в USD."
+    },
+
+    "//COMMENT 4" : "### About bank cards:",
+    "[debit card]" : {
+        "AZN" : "Debit kart, alış-veriş zamanı təhlükəsiz şəkildə nağdsız ödənişlər etməyə kömək edən bank məhsuludur. Debit kartları sadə və premium olmaqla iki çeşiddə müştərilərə təqdim olunur. Bankın debit kart məhsullarını incələmək və onlayn şəkildə sifariş etmək üçün “Kartlar” kateqoriyasına keçid edin.", 
+        "ENG" : "A debit card is a banking product that helps you make secure cashless payments during purchases. Debit cards are offered to customers in two types: simple and premium. To explore the bank’s debit card products and order online, please go to the “Cards” category.",
+        "RUS" : "Дебетовая карта - это банковский продукт, который помогает безопасно совершать безналичные платежи при покупках. Дебетовые карты предлагаются клиентам в двух вариантах: простые и премиум. Чтобы ознакомиться с дебетовыми картами банка и оформить заказ онлайн, перейдите в категорию «Карты»."
+    },
+    "[installment card]" : {
+        "AZN" : "Taksit kartı alış-veriş zamanı ödənişlərin müəyyən müddət içində hissəli şəkildə faizsiz və kommissiyasız şəkildə ödənilməsinə imkan verən plastik kartdır. 2 qat ƏDV, keşbek, pulsuz nağdlaşdırma və köçürmə kimi münasib şərtlərlə alış-veriş etməyə imkan verən kredit kartı pulsuz şəkildə sizlərə təqdim olunur. Onlayn sifariş formasını dolduraraq karta sahib ola bilərsiniz.", 
+        "ENG" : "An installment card is a plastic card that allows payments for purchases to be made in installments within a certain period, without interest or commission. A credit card that enables shopping with favorable conditions such as double VAT, cashback, free cash withdrawals, and transfers is provided to you free of charge. You can get the card by filling out the online application form.",
+        "RUS" : "Карта рассрочки - это пластиковая карта, которая позволяет оплачивать покупки частями в течение определённого периода без процентов и комиссий. Кредитная карта, предоставляющая возможность совершать покупки на выгодных условиях, таких как двойной НДС, кешбэк, бесплатное снятие наличных и переводы, предоставляется вам бесплатно. Вы можете получить карту, заполнив онлайн-заявку."
+    },
+    "[deposit card]" : {
+        "AZN" : "Depozit gəlirlərinizi əldə etmək üçün istifadə edə biləcəyiniz depozit kartlarını əldə etmək üçün Kapital depoziti hesabına sahib olmağınız yetərlidir.", 
+        "ENG" : "To obtain deposit cards that you can use to earn deposit income, it is sufficient to have a Kapital deposit account.",
+        "RUS" : "Для получения депозитных карт, с помощью которых вы можете получать доход от депозита, достаточно иметь депозитный счет в Kapital."
+    },
+    "[digital card]" : {
+        "AZN" : "Digital card - banka yaxınlaşmadan mobil tətbiq vasitəsilə rəsmiləşdirilə bilən virtual debet kartdır. Üstünlükləri isə:\\n-Bankomatda günün 24 saatı nağdlaşdırma\\n-İnternetdə alış-veriş etmək imkanı\\n-Respublika ərazisində və xarici ölkələrdə xidmət və malların dəyərinin ödənilməsi\\n-Təmassız ödəniş texnologiyası", 
+        "ENG" : "Digital card - a virtual debit card that can be issued through a mobile application without visiting the bank. Its advantages are:\\n-24/7 cash withdrawal at ATMs\\n-Ability to shop online\\n-Payment for services and goods within the country and abroad\\n-Contactless payment technology",
+        "RUS" : "Цифровая карта - виртуальная дебетовая карта, которую можно оформить через мобильное приложение без посещения банка. Ее преимущества:\\n-Круглосуточное снятие наличных в банкоматах\\n-Возможность покупок в Интернете\\n-Оплата услуг и товаров на территории страны и за рубежом\\n-Технология бесконтактной оплаты"
+    },
+    "[card limit]" : {
+        "AZN" : "Bank tərəfindən emissiya edilən kartlar vasitəsilə aparılan əməliyyatlar zamanı baş verə biləcək əməliyyat riskinin azaldılması və kart itirildikdə potensial itkilərin azaldılması məqsədilə İnternet üzərindən aparılan əməliyyatlara, həmçinin yüksək riskli və risk dərəcəsi nisbətən aşağı olan ölkələrdə ATM-lərdən nağd vəsaitin çıxarılması və POS-terminal vasitəsilə ödənişlərin aparılmasına dair plastik kart növləri üzrə gündəlik istifadə limitləri təyin edilmişdir.", 
+        "ENG" : "To reduce the operational risk that may occur during transactions made with cards issued by the bank and to minimize potential losses in case the card is lost, daily usage limits have been set for plastic card types regarding transactions conducted over the Internet, as well as cash withdrawals from ATMs and payments made via POS terminals in high-risk and relatively low-risk countries.",
+        "RUS" : "Для снижения операционного риска, который может возникнуть при операциях с картами, выпущенными банком, а также для минимизации потенциальных убытков в случае утери карты, установлены ежедневные лимиты на использование пластиковых карт по операциям в Интернете, а также по снятию наличных в банкоматах и оплате через POS-терминалы в странах с высоким уровнем риска и относительно низким уровнем риска."
+    },
+
+    "//COMMENT 5" : "#### General questions:",
+    "[money transfer]" : {
+        "AZN" : "Pul transferi üçün veb səhifəmizdə “Ödənişlər” bölməsinə keçid edin. “Yeni Köçürmə” seçin, alıcının İBAN-nı və məbləği daxil etdikdən sonra PİN kodunuz vasitəsi ilə təsdiq edərək transferi həyəta keçirə bilərsiniz.", 
+        "ENG" : "For a money transfer, go to the “Payments” section on our website. Select “New Transfer,” enter the recipient’s IBAN and the amount, then confirm with your PIN code to complete the transfer.",
+        "RUS" : "Для перевода денег перейдите в раздел «Платежи» на нашем сайте. Выберите «Новый перевод», введите ИБАН получателя и сумму, затем подтвердите перевод с помощью вашего ПИН-кода."
+    },
+    "[cif code]" : {
+        "AZN" : "Müştəri kodu Kapital Bankda bank hesabına sahib şəxslərin sahib olduğu telefon vasitəsilə eyniləşdirilməsi üçün istifadə edilən koddur.", 
+        "ENG" : "The customer code is a code used for identification through the phone number owned by the person who holds a bank account at Kapital Bank.",
+        "RUS" : "Код клиента - это код, используемый для идентификации по номеру телефона, принадлежащему лицу, имеющему банковский счет в Kapital Bank."
+    },
+    "[factoring]" : {
+        "AZN" : "Faktorinq - fərdi sahibkarlar və hüquqi şəxslərin alıcılarına qarşı olan pul tələbi hüququnun banka güzəşt edilməsi qarşılığında, dövriyyə vəsaitlərinin bank tərəfindən maliyyələşdirilməsinə imkan yaradan məhsuldur. Faktorinq məhsulları alıcının ödəniş etməsini gözləmədən, biznesinizi  inkişaf etdirmək üçün lazım olan vəsaitlərə sürətli çıxış imkanı tanıyır. Faktorinq məhsulu üzrə bank tərəfindən tətbiq edilən şərtlər aşağıdakı kimidir:\\n-İnvoysun 90%-nə qədər maliyələşdirmə məbləği\\n-13%-dən başlayan illik faiz dərəcələri\\n-90 günə qədər maliyyələşmə müddəti\\n-Təminatsız (faktorinq üzrə girov tələb olunmur)\\n-0.5 % komissiya faizi", 
+        "ENG" : "Factoring is a product that allows individual entrepreneurs and legal entities to receive financing from the bank in exchange for assigning their monetary claims against buyers. Factoring products provide quick access to the funds needed to grow your business, without waiting for the buyer to make payment. The terms offered by the bank for the factoring product are as follows:\\n-Financing amount up to 90% of the invoice\\n-Annual interest rates starting from 13%\\n-Financing period up to 90 days\\n-Unsecured (no collateral required for factoring)\\n-0.5% commission fee",
+        "RUS" : "Факторинг - это продукт, который позволяет индивидуальным предпринимателям и юридическим лицам получать финансирование от банка в обмен на уступку денежных требований к покупателям. Факторинговые продукты обеспечивают быстрый доступ к средствам, необходимым для развития бизнеса, без ожидания оплаты от покупателя. Условия, предлагаемые банком по факторингу, следующие:\\n-Финансирование до 90% от суммы счета-фактуры\\n-Годовые процентные ставки от 13%\\n-Срок финансирования до 90 дней\\n-Без обеспечения (залог по факторингу не требуется)\\n-Комиссия — 0,5%"
+    },
+    "[exchange]" : {
+        "AZN" : "Aşağıdakı linkə daxil olaraq cari valyuta məzənnəsi barədə məlumat ala bilərsiniz:\\nhttps://www.kapitalbank.az/currency-rates/28-04-2025", 
+        "ENG" : "You can get information about the current exchange rate by clicking on the link below:\\nhttps://www.kapitalbank.az/currency-rates/28-04-2025",
+        "RUS" : "Вы можете получить информацию о текущем курсе валют, перейдя по следующей ссылке:\\nhttps://www.kapitalbank.az/currency-rates/28-04-2025"
+    },
+    "[greetings]" : {
+        "AZN" : "Salam, Mən bankbot, bankla bağlı bütün suallarınızı cavablandırmağa və sizə dəstək olmağa hazıram. Sizə necə kömək edə bilərəm?", 
+        "ENG" : "Hi, I am Bankbot, ready to answer all your questions about the bank and support you. How can I help you?",
+        "RUS" : "Здравствуйте, я Банкбот, готов ответить на все ваши вопросы, связанные с банком, и оказать вам поддержку. Чем могу помочь?"
+    },
+
+    "//COMMENT 6" : "#### About customer's profile:",
+    "[account balans check]" : {
+        "AZN" : "Sizin hal-hazırda balansınız: ", 
+        "ENG" : "Your current balance is: ",
+        "RUS" : "Ваш текущий баланс: "
+    },
+    "[iban code check]" : {
+        "AZN" : "Sizin IBAN nömrəniz: ", 
+        "ENG" : "Your IBAN number is: ",
+        "RUS" : "Ваш номер IBAN: "
+    },
+    "[number of accounts check]" : {
+        "AZN" : "Sizdə hal-hazırda aktiv balansların sayı: ", 
+        "ENG" : "The number of active accounts you currently have is: ",
+        "RUS" : "Количество активных балансов у вас в настоящее время:"
+    },
+    "[account currency check]" : {
+        "AZN" : "siz bu valyutalarda balans saxlayırsınız: ", 
+        "ENG" : "You hold a balance in these currencies: ",
+        "RUS" : "Вы держите баланс в этих валютах: "
+    },
+    "[loan debt check]" : {
+        "AZN" : "Sizin kredit borcunuz: ", 
+        "ENG" : "Your loan debt is: ",
+        "RUS" : "Ваша кредитная задолженность: "
+    },
+	"[account history]" :{
+		"AZN" : "Əməliyyat tarixçənizi göstərmək üçün sistemdən məlumatlar toplanır.",
+		"ENG" : "Your account transaction history is as follows:",
+		"RUS" : "Мы предоставляем вам вашу кредитную историю:"
+	},
+	"[loan history]" : {
+	    "AZN" : "Kredit tarixçənizi təqdim edirik: ",
+		"ENG" : "Here is the history of your loan debts: ",
+		"RUS" : "История ваших кредитов представлена ниже: "
+	},
+	"[transfer history]" : {
+	    "AZN" : "Pul köçürmələri tarixçəniz budur: ",
+		"ENG" : "Here is your recent transfer history: ",
+		"RUS" : "История ваших последних переводов следующая: "
+	},
+
+    "//COMMENT 7" : "#### Other:",
+    "[other]" : {
+        "AZN" : "Təəssüf ki, bu barədə məlumat bazamızda yoxdur. Daha ətraflı məlumat üçün müştəri xidmətimiz ilə əlaqə saxlaya bilərsiniz (196).", 
+        "ENG" : "Unfortunately, we do not have any information about this topic in our database. For more detailed information, you can contact our customer service (196).",
+        "RUS" : "К сожалению, у нас нет информации об этом в нашей базе данных. Для получения более подробной информации вы можете связаться с нашей службой поддержки клиентов (196)."
+    }
+}

@@ -1,7 +1,7 @@
 package az.risk.SimpleBankAssistant.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import az.risk.SimpleBankAssistant.entity.CustomerAccountHistory;
 import az.risk.SimpleBankAssistant.enums.CurrencyType;
 import az.risk.SimpleBankAssistant.repository.CustomerAccountHistoryRepository;
 import az.risk.SimpleBankAssistant.repository.CustomerAccountRepository;
+import az.risk.SimpleBankAssistant.requests.AccountCreationRequest;
 import az.risk.SimpleBankAssistant.util.CurrencyConverterUtil;
 import az.risk.SimpleBankAssistant.util.IbanGenerator;
 
@@ -25,18 +26,23 @@ public class CustomerAccountService {
 
 	@Autowired
 	public CustomerAccountService(CustomerAccountRepository customerAccountRepository,
-								   CurrencyConverterUtil currencyConverterUtil,
-								   CustomerAccountHistoryRepository historyRepository) {
+			CurrencyConverterUtil currencyConverterUtil, CustomerAccountHistoryRepository historyRepository) {
 		this.customerAccountRepository = customerAccountRepository;
 		this.currencyConverterUtil = currencyConverterUtil;
 		this.historyRepository = historyRepository;
 	}
 
-	public CustomerAccount createAccount(CustomerAccount customerAccount) {
-		customerAccount.setIban(IbanGenerator.generateRandomIban());
-		customerAccount.setAvailableBalance(BigDecimal.ZERO);
-		customerAccount.setUser(getAuthenticatedUsername());
-		return customerAccountRepository.save(customerAccount);
+	public CustomerAccount createAccount(AccountCreationRequest request) {
+		CustomerAccount account = new CustomerAccount();
+		account.setCurrency(request.getCurrency());
+
+		account.setIban(IbanGenerator.generateRandomIban());
+		account.setAvailableBalance(BigDecimal.ZERO);
+		account.setUser(getAuthenticatedUsername());
+		account.setIsAccountActive(true);
+		
+
+		return customerAccountRepository.save(account);
 	}
 
 	public CustomerAccount updateBalance(Long accountId, BigDecimal amount) {
@@ -56,13 +62,14 @@ public class CustomerAccountService {
 		CustomerAccount account = customerAccountRepository.findById(accountId)
 				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
 		return account.getAvailableBalance();
-	}
+	} 
 
 	public void closeAccount(Long accountId) {
 		CustomerAccount account = customerAccountRepository.findById(accountId)
 				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
 		account.setIsAccountActive(false);
-		account.setClosedDate(LocalDateTime.now());
+		account.setClosedDate(new Timestamp(System.currentTimeMillis()));
+
 		customerAccountRepository.save(account);
 	}
 
@@ -71,7 +78,8 @@ public class CustomerAccountService {
 				.orElseThrow(() -> new RuntimeException("Hesab tapılmadı"));
 
 		String fromCurrency = account.getCurrency().name();
-		BigDecimal convertedAmount = currencyConverterUtil.convert(account.getAvailableBalance(), fromCurrency, toCurrencyStr);
+		BigDecimal convertedAmount = currencyConverterUtil.convert(account.getAvailableBalance(), fromCurrency,
+				toCurrencyStr);
 
 		account.setAvailableBalance(convertedAmount);
 		account.setCurrency(CurrencyType.valueOf(toCurrencyStr.toUpperCase()));
@@ -82,14 +90,15 @@ public class CustomerAccountService {
 		return convertedAmount;
 	}
 
-	private void saveAccountHistory(CustomerAccount account, BigDecimal amount, CurrencyType currency, String operationType) {
+	private void saveAccountHistory(CustomerAccount account, BigDecimal amount, CurrencyType currency,
+			String operationType) {
 		CustomerAccountHistory history = new CustomerAccountHistory();
 		history.setIban(account.getIban());
 		history.setAmount(amount);
 		history.setCurrency(currency);
 		history.setUser(account.getUser());
 		history.setOperationType(operationType);
-		history.setOperationDate(LocalDateTime.now());
+		history.setOperationDate(new Timestamp(System.currentTimeMillis()));
 		historyRepository.save(history);
 	}
 
@@ -105,4 +114,16 @@ public class CustomerAccountService {
 		String username = getAuthenticatedUsername();
 		return historyRepository.findByUser(username);
 	}
+
+	public record AccountInfoDTO(Long customerId, String iban) {}
+
+	public List<AccountInfoDTO> getUserIbans() {
+	    String username = getAuthenticatedUsername();
+	    List<CustomerAccount> accounts = customerAccountRepository.findByUserAndIsAccountActive(username, true);
+	    return accounts.stream()
+	                   .map(account -> new AccountInfoDTO(account.getAccountId(), account.getIban()))
+	                   .toList();
+	}
+
+
 }

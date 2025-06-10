@@ -1,6 +1,7 @@
 package az.risk.SimpleBankAssistant.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,7 +21,6 @@ import lombok.Data;
 @Data
 @Table(name = "costumer_accounts")
 public class CustomerAccount {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long accountId;
@@ -34,8 +34,8 @@ public class CustomerAccount {
 	private Boolean isAccountActive = true;
 	@Column(nullable = false, updatable = false)
 	@CreationTimestamp
-	private LocalDateTime openedDate;
+	private Timestamp openedDate;
 	private String user;
-	private LocalDateTime closedDate;
+	private Timestamp closedDate;
 }
 

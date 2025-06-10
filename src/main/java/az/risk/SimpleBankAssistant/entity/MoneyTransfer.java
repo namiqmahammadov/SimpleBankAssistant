@@ -1,6 +1,7 @@
 package az.risk.SimpleBankAssistant.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,13 +20,10 @@ public class MoneyTransfer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String senderIban;
 	private String receiverIban;
-
 	private BigDecimal amount;
 	@CreationTimestamp
-	private LocalDateTime transferDate;
-
+	private Timestamp transferDate;
 	private Boolean isSuccessful;
 }

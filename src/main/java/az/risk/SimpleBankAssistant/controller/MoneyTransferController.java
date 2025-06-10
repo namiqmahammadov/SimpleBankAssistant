@@ -28,17 +28,18 @@ public class MoneyTransferController {
 	private OtpService otpService;
 
 	private TransferRequest pendingTransferRequest;
-	@PreAuthorize("hasRole('USER')")
-	@PostMapping
-	public ResponseEntity<String> initiateTransfer(@RequestBody TransferRequest dto) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/initiate")
+    public ResponseEntity<String> initiateTransfer(@RequestBody TransferRequest dto) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		otpService.sendOtpToEmail(email);
+        // İndi yoxlamalar + OTP göndərmə bu metodda olacaq
+        String message = transferService.validateTransferAndSendOtp(email, dto);
 
-		this.pendingTransferRequest = dto;
+        this.pendingTransferRequest = dto;
+        return ResponseEntity.ok(message);
+    }
 
-		return ResponseEntity.ok("OTP kodu göndərildi. OTP təsdiqindən sonra transfer həyata keçiriləcək.");
-	}
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/verify-otp")
 	public ResponseEntity<TransferResponse> verifyOtp(@RequestBody OtpVerificationRequest request) {

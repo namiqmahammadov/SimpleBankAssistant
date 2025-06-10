@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import az.risk.SimpleBankAssistant.entity.User;
+import az.risk.SimpleBankAssistant.enums.Role;
 import az.risk.SimpleBankAssistant.repository.UserRepository;
 
 @Service
@@ -15,9 +16,10 @@ public class UserService {
 
 	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
-	public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder) {
+
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
-this.passwordEncoder=passwordEncoder;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public List<User> getAllUsers() {
@@ -39,11 +41,21 @@ this.passwordEncoder=passwordEncoder;
 			foundUser.setFullname(newUser.getFullname());
 			foundUser.setEmail(newUser.getEmail());
 			foundUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            foundUser.setRole(newUser.getRole());
 			userRepository.save(foundUser);
 			return foundUser;
 		} else
 			return null;
+	}
+
+	public boolean updateUserRole(Long userId, Role newRole) {
+		Optional<User> userOpt = userRepository.findById(userId);
+		if (userOpt.isPresent()) {
+			User user = userOpt.get();
+			user.setRole(newRole);
+			userRepository.save(user);
+			return true;
+		}
+		return false;
 	}
 
 	public void deleteById(Long userId) {

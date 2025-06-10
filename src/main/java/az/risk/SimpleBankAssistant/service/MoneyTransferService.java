@@ -1,5 +1,6 @@
 package az.risk.SimpleBankAssistant.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccount;
 import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
+import az.risk.SimpleBankAssistant.exception.CheckTransferException;
 import az.risk.SimpleBankAssistant.repository.CustomerAccountRepository;
 import az.risk.SimpleBankAssistant.repository.MoneyTransferRepository;
 import az.risk.SimpleBankAssistant.requests.TransferRequest;
@@ -26,21 +28,48 @@ public class MoneyTransferService {
 
 	@Autowired
 	private OtpService otpService;
+	
+	  public String validateTransferAndSendOtp(String senderUsername, TransferRequest dto) {
+	        // 1. Göndərən hesabı tap
+	        List<CustomerAccount> senderAccounts = accountRepository.findByUser(senderUsername);
+	        if (senderAccounts.isEmpty()) {
+	            throw new RuntimeException("Göndərən hesab tapılmadı");
+	        }
+
+	        CustomerAccount sender = senderAccounts.stream()
+	                .filter(acc -> acc.getIban().equals(dto.getSenderIban()))
+	                .findFirst()
+	                .orElseThrow(() -> new CheckTransferException("Göndərən IBAN tapılmadı"));
+
+	        // 2. Qəbul edən hesabı tap
+	        CustomerAccount receiver = accountRepository.findByIban(dto.getReceiverIban())
+	                .orElseThrow(() -> new CheckTransferException("Qəbul edən IBAN tapılmadı"));
+
+	        // 3. Balans yoxla
+	        if (sender.getAvailableBalance().compareTo(dto.getAmount()) < 0) {
+	            throw new CheckTransferException("Balans kifayət etmir");
+	        }
+
+	        // Əgər buraya gəldisə, yoxlamalar uğurludur
+	        otpService.sendOtpToEmail(senderUsername);
+
+	        return "OTP kodu göndərildi. OTP təsdiqindən sonra transfer həyata keçiriləcək.";
+	    }
 
 	public TransferResponse transferMoney(String senderUsername, TransferRequest dto) {
 		List<CustomerAccount> senderAccounts = accountRepository.findByUser(senderUsername);
 		if (senderAccounts.isEmpty()) {
-			throw new RuntimeException("Göndərən hesab tapılmadı");
+			throw new CheckTransferException("Göndərən hesab tapılmadı");
 		}
 
 		CustomerAccount sender = senderAccounts.stream().filter(acc -> acc.getIban().equals(dto.getSenderIban()))
-				.findFirst().orElseThrow(() -> new RuntimeException("Göndərən IBAN tapılmadı"));
+				.findFirst().orElseThrow(() -> new CheckTransferException("Göndərən IBAN tapılmadı"));
 
 		CustomerAccount receiver = accountRepository.findByIban(dto.getReceiverIban())
-				.orElseThrow(() -> new RuntimeException("Qəbul edən IBAN tapılmadı"));
+				.orElseThrow(() -> new CheckTransferException("Qəbul edən IBAN tapılmadı"));
 
 		if (sender.getAvailableBalance().compareTo(dto.getAmount()) < 0) {
-			throw new RuntimeException("Balans kifayət etmir");
+			throw new CheckTransferException("Balans kifayət etmir");
 		}
 
 		// Balansı dəyiş
@@ -55,7 +84,7 @@ public class MoneyTransferService {
 		transfer.setSenderIban(sender.getIban());
 		transfer.setReceiverIban(dto.getReceiverIban());
 		transfer.setAmount(dto.getAmount());
-		transfer.setTransferDate(LocalDateTime.now());
+		transfer.setTransferDate(new Timestamp(System.currentTimeMillis()));
 		transfer.setIsSuccessful(true);
 		transferRepository.save(transfer);
 
@@ -73,7 +102,7 @@ public class MoneyTransferService {
 		String username = getUser();
 		List<CustomerAccount> accounts = accountRepository.findByUser(username);
 		if (accounts.isEmpty()) {
-			throw new RuntimeException("İstifadəçi hesabı tapılmadı");
+			throw new CheckTransferException("İstifadəçi hesabı tapılmadı");
 		}
 
 		return accounts.stream().map(account -> transferRepository.findBySenderIban(account.getIban()))

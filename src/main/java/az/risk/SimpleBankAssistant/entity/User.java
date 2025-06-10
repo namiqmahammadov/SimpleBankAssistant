@@ -14,7 +14,6 @@ import lombok.Data;
 @Table(name = "user")
 @Data
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,5 +23,4 @@ public class User {
 	private boolean enabled;
 	@Enumerated(EnumType.STRING)
 	private Role role;
-
 }

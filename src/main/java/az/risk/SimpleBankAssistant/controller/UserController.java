@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import az.risk.SimpleBankAssistant.entity.User;
+import az.risk.SimpleBankAssistant.enums.Role;
 import az.risk.SimpleBankAssistant.exception.UserNotFoundException;
 import az.risk.SimpleBankAssistant.responses.UserResponse;
 import az.risk.SimpleBankAssistant.service.UserService;
@@ -64,6 +65,16 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
+   @PreAuthorize("hasRole('ADMIN')")
+   @PutMapping("/{userId}/role")
+   public ResponseEntity<Void> updateUserRole(@PathVariable Long userId, @RequestBody Role newRole) {
+       boolean isUpdated = userService.updateUserRole(userId, newRole);
+       if (isUpdated) {
+           return ResponseEntity.ok().build();
+       }
+       return ResponseEntity.notFound().build();
+   }
+
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{userId}")
 	public void deleteOneUser(@PathVariable Long userId) {

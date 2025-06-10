@@ -1,7 +1,7 @@
 package az.risk.SimpleBankAssistant.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +90,7 @@ public class LoanServiceImpl implements LoanService {
 		history.setLoanPurpose(saved.getLoanPurpose());
 		history.setIban(saved.getIban());
 		history.setOperationType("APPLY");
-		history.setOperationDate(LocalDateTime.now());
+		history.setOperationDate(new Timestamp((System.currentTimeMillis())));
 		history.setUser(currentUser);
 		loanHistoryRepository.save(history);
 

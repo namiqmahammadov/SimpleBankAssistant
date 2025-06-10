@@ -17,7 +17,6 @@ import java.util.Map;
 
 @Service
 public class ChatbotService {
-
     private final CustomerAccountService customerAccountService;
     private final LoanService loanService;
     private final MoneyTransferService moneyTransferService;
@@ -35,10 +34,10 @@ public class ChatbotService {
         this.moneyTransferService = moneyTransferService;
     }
 
-    public String handleUserInput(String userInput) {
+    public String handleUserInput(String userInput, String language) {
         try {
             // AI cavabını al (JSON formatında)
-            String aiRawResponse = getAiRawResponse(userInput);
+            String aiRawResponse = getAiRawResponse(userInput, language);
             JsonNode aiJson = objectMapper.readTree(aiRawResponse);
 
             // JSON-dan lazım olan sahələri çıxart
@@ -55,12 +54,12 @@ public class ChatbotService {
         }
     }
 
-    private String getAiRawResponse(String input) {
+    private String getAiRawResponse(String input, String language) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            Question question = new Question(input);
+            Question question = new Question(input, language);
             HttpEntity<Question> entity = new HttpEntity<>(question, headers);
 
             ResponseEntity<String> response = restTemplate.postForEntity(CLASSIFIER_URL, entity, String.class);
@@ -155,9 +154,11 @@ public class ChatbotService {
 
     static class Question {
         public String question;
+        public String language;
 
-        public Question(String question) {
+        public Question(String question, String language) {
             this.question = question;
+            this.language = language;
         }
 
         public Question() {

@@ -3,6 +3,7 @@ package az.risk.SimpleBankAssistant.service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -115,15 +116,29 @@ public class CustomerAccountService {
 		return historyRepository.findByUser(username);
 	}
 
-	public record AccountInfoDTO(Long customerId, String iban) {}
+	public record AccountInfoDTO(Long customerId, String iban,String currency) {}
 
 	public List<AccountInfoDTO> getUserIbans() {
 	    String username = getAuthenticatedUsername();
 	    List<CustomerAccount> accounts = customerAccountRepository.findByUserAndIsAccountActive(username, true);
 	    return accounts.stream()
-	                   .map(account -> new AccountInfoDTO(account.getAccountId(), account.getIban()))
+	                   .map(account -> new AccountInfoDTO(account.getAccountId(), account.getIban(),account.getCurrency().name()))
 	                   .toList();
 	}
+	public BigDecimal getTotalBalanceOfAllAccounts() {
+	    List<CustomerAccount> accounts = customerAccountRepository.findByIsAccountActive(true);
+	    return accounts.stream()
+	                   .map(CustomerAccount::getAvailableBalance)
+	                   .reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+	public List<CustomerAccountHistory> getIncomeHistories() {
+	    String username = getAuthenticatedUsername();
+	    return historyRepository.findByUser(username).stream()
+	            .filter(h -> h.getOperationType().equalsIgnoreCase("BALANCE_UPDATE"))
+	            .collect(Collectors.toList());
+	}
+
+
 
 
 }

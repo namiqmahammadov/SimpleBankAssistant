@@ -15,5 +15,7 @@ public interface CustomerAccountRepository extends JpaRepository<CustomerAccount
 	List<CustomerAccount> findByUser(String user);
 
 	List<CustomerAccount> findByUserAndIsAccountActive(String user, boolean isAccountActive);
+	List<CustomerAccount> findByIsAccountActive(boolean isActive);
+
 
 }

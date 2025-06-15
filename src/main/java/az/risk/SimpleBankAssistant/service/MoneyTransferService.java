@@ -1,7 +1,6 @@
 package az.risk.SimpleBankAssistant.service;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,5 +107,20 @@ public class MoneyTransferService {
 		return accounts.stream().map(account -> transferRepository.findBySenderIban(account.getIban()))
 				.flatMap(List::stream).collect(Collectors.toList());
 	}
+	public List<MoneyTransfer> getIncomingTransfers() {
+	    String username = getUser();
+	    List<CustomerAccount> accounts = accountRepository.findByUser(username);
+
+	    if (accounts == null || accounts.isEmpty()) {
+	        throw new CheckTransferException("İstifadəçinin hesabı tapılmadı.");
+	    }
+
+	    return accounts.stream()
+	            .map(CustomerAccount::getIban)
+	            .flatMap(iban -> transferRepository.findByReceiverIban(iban).stream())
+	            .collect(Collectors.toList());
+	}
+
+
 
 }

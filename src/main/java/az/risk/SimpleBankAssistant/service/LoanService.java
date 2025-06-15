@@ -8,9 +8,9 @@ import az.risk.SimpleBankAssistant.responses.LoanResponse;
 public interface LoanService {
 	LoanResponse applyForLoan(LoanRequest request);
 
-	ResponseEntity<?> getLoanDebt(); // Yeni metod
+	ResponseEntity<?> getLoanDebt(); 
 
-	ResponseEntity<?> getTotalLoanDebt(); // Yeni API
+	ResponseEntity<?> getTotalLoanDebt(); 
 
 	ResponseEntity<?> getLoanHistory();
 

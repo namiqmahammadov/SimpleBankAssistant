@@ -21,39 +21,29 @@ import az.risk.SimpleBankAssistant.responses.LoanResponse;
 
 @Service
 public class LoanServiceImpl implements LoanService {
-
 	@Autowired
 	private LoanRepository loanRepository;
 	@Autowired
 	private CustomerAccountRepository customerAccountRepository;
-
 	@Autowired
 	private LoanHistoryRepository loanHistoryRepository;
-
 	@Override
 	public ResponseEntity<?> getLoanHistory() {
 		String currentUser = getUser();
 		var historyList = loanHistoryRepository.findByUser(currentUser);
 		return ResponseEntity.ok(historyList);
 	}
-
 	public LoanResponse applyForLoan(LoanRequest request) {
 		String currentUser = getUser();
-
-		// İstifadəçinin bütün hesablarını tap
 		CustomerAccount account = customerAccountRepository.findAll().stream()
 				.filter(acc -> acc.getUser().equals(currentUser) && acc.getIban().endsWith(request.getIbanSuffix()))
 				.findFirst()
 				.orElseThrow(() -> new RuntimeException("IBAN son 4 rəqəminə uyğun aktiv hesab tapılmadı."));
-
-		// Mövcud istifadəçiyə aid bütün kreditlərin cəmini hesabla
 		BigDecimal totalUserLoanAmount = loanRepository.findAll().stream()
 				.filter(loan -> loan.getIban() != null
 						&& loan.getIban().startsWith(account.getIban().substring(0, account.getIban().length() - 4))
 						&& account.getUser().equals(currentUser))
 				.map(Loan::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-
-		// Əgər yeni kreditlə birlikdə məbləğ 2000 AZN-dən çox olursa, istisna at
 		BigDecimal totalWithNewLoan = totalUserLoanAmount.add(request.getAmount());
 		if (totalWithNewLoan.compareTo(new BigDecimal("2000")) > 0) {
 			throw new RuntimeException("Ümumi kredit məbləği 2000 AZN-i keçə bilməz.");

@@ -10,4 +10,7 @@ import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
 @Repository
 public interface MoneyTransferRepository extends JpaRepository<MoneyTransfer, Long> {
 	List<MoneyTransfer> findBySenderIban(String senderIban);
+
+	List<MoneyTransfer> findByReceiverIban(String receiverIban);
+
 }

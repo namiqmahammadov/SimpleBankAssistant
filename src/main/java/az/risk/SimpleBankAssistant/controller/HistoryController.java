@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import az.risk.SimpleBankAssistant.entity.CustomerAccountHistory;
 import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
+import az.risk.SimpleBankAssistant.responses.IncomeHistoryResponse;
 import az.risk.SimpleBankAssistant.service.CustomerAccountService;
 import az.risk.SimpleBankAssistant.service.LoanService;
 import az.risk.SimpleBankAssistant.service.MoneyTransferService;
@@ -44,5 +45,15 @@ public class HistoryController {
 	public ResponseEntity<?> getLoanHistory() {
 		return loanService.getLoanHistory();
 	}
+	@PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+	@GetMapping("/income")
+	public ResponseEntity<?> getIncomeHistory() {
+	    List<MoneyTransfer> incomingTransfers = moneyTransferService.getIncomingTransfers();
+	    List<CustomerAccountHistory> balanceIncomes = customerAccountService.getIncomeHistories();
+
+	    return ResponseEntity.ok(new IncomeHistoryResponse(incomingTransfers, balanceIncomes));
+	}
+
+
 
 }

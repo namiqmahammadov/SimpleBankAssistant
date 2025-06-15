@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,6 +72,12 @@ public class CustomerAccountController {
 	@GetMapping("/my-ibans")
 	public List<AccountInfoDTO> getMyIbans() {
 		return customerAccountService.getUserIbans();
+	}
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping("/accounts/total-balance")
+	public ResponseEntity<BigDecimal> getTotalBalanceOfAllAccounts() {
+	    BigDecimal totalBalance = customerAccountService.getTotalBalanceOfAllAccounts();
+	    return ResponseEntity.ok(totalBalance);
 	}
 
 }

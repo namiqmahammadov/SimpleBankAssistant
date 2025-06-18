@@ -1,19 +1,25 @@
 package az.risk.SimpleBankAssistant.service;
 
-import az.risk.SimpleBankAssistant.entity.CustomerAccount;
-import az.risk.SimpleBankAssistant.entity.CustomerAccountHistory;
-import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import az.risk.SimpleBankAssistant.entity.CustomerAccount;
+import az.risk.SimpleBankAssistant.entity.CustomerAccountHistory;
+import az.risk.SimpleBankAssistant.entity.MoneyTransfer;
 
 @Service
 public class ChatbotService {
@@ -79,18 +85,23 @@ public class ChatbotService {
         String username = getAuthenticatedUsername();
 
         switch (category) {
-            case "[account balans check]":
-                List<CustomerAccount> accounts = customerAccountService.getUserAccounts(username);
-                if (!accounts.isEmpty()) {
-                    BigDecimal balance = accounts.get(0).getAvailableBalance();
-                    return balance.toPlainString() + " AZN";
-                }
-                return "0 AZN";
+        case "[account balans check]":
+            List<CustomerAccount> accounts = customerAccountService.getUserAccounts(username);
+            if (!accounts.isEmpty()) {
+                String result = accounts.stream()
+                        .map(account -> account.getIban() + " - " + account.getAvailableBalance().toPlainString() + " " + account.getCurrency())
+                        .collect(Collectors.joining("\n"));
+                return result;
+            }
+            return "Hesab tapılmadı.";
+
 
             case "[iban code check]":
                 List<CustomerAccount> ibanAccounts = customerAccountService.getUserAccounts(username);
                 if (!ibanAccounts.isEmpty()) {
-                    return ibanAccounts.get(0).getIban();
+                    return ibanAccounts.stream()
+                                       .map(CustomerAccount::getIban)
+                                       .collect(Collectors.joining(", "));
                 }
                 return "IBAN tapılmadı.";
 

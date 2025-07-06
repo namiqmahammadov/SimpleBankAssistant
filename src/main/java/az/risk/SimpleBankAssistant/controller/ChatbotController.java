@@ -10,7 +10,7 @@ import az.risk.SimpleBankAssistant.requests.ChatbotRequest;
 import az.risk.SimpleBankAssistant.service.ChatbotService;
 
 @RestController
-@RequestMapping("/api/chatbot")
+@RequestMapping("/chatbot")
 public class ChatbotController {
 
     private final ChatbotService chatbotService;

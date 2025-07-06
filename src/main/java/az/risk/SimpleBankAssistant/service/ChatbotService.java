@@ -5,11 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -41,16 +37,20 @@ public class ChatbotService {
 
 	public String handleUserInput(String userInput, String language) {
 		try {
-			// AI cavabını al (JSON formatında)
+			// AI cavabını al
 			String aiRawResponse = getAiRawResponse(userInput, language);
 			JsonNode aiJson = objectMapper.readTree(aiRawResponse);
 
-			// JSON-dan lazım olan sahələri çıxart
 			String category = aiJson.path("class name").asText("[other]");
 			String staticText = aiJson.path("response").asText("");
 
-			// DB-dən əlavə cavab
-			String dynamicPart = getDynamicPart(category);
+			// Şəxsi sualdırsa və login olunmayıbsa
+			if (isPersonalCategory(category) && !isUserAuthenticated()) {
+				return "Bu sual üçün hesabınıza daxil olun.";
+			}
+
+			// Dinamik cavab yalnız şəxsi suallar üçün əlavə olunur
+			String dynamicPart = isPersonalCategory(category) ? getDynamicPart(category) : "";
 
 			return staticText + dynamicPart;
 		} catch (Exception e) {
@@ -83,77 +83,84 @@ public class ChatbotService {
 	private String getDynamicPart(String category) {
 		String username = getAuthenticatedUsername();
 
-		switch (category) {
-		case "[account balans check]":
-			List<CustomerAccount> accounts = customerAccountService.getUserAccounts(username);
-			if (!accounts.isEmpty()) {
-				String result = accounts
-						.stream().map(account -> account.getIban() + " - "
-								+ account.getAvailableBalance().toPlainString() + " " + account.getCurrency())
+		return switch (category) {
+			case "[account balans check]" -> {
+				List<CustomerAccount> accounts = customerAccountService.getUserAccounts(username);
+				yield accounts.isEmpty() ? "" :
+					accounts.stream()
+						.map(account -> account.getIban() + " - " + account.getAvailableBalance().toPlainString() + " " + account.getCurrency())
 						.collect(Collectors.joining("\n"));
-				return result;
 			}
-			return "Hesab tapılmadı.";
-
-		case "[iban code check]":
-			List<CustomerAccount> ibanAccounts = customerAccountService.getUserAccounts(username);
-			if (!ibanAccounts.isEmpty()) {
-				return ibanAccounts.stream().map(CustomerAccount::getIban).collect(Collectors.joining(", "));
+			case "[iban code check]" -> {
+				List<CustomerAccount> ibanAccounts = customerAccountService.getUserAccounts(username);
+				yield ibanAccounts.isEmpty() ? "" :
+					ibanAccounts.stream().map(CustomerAccount::getIban).collect(Collectors.joining(", "));
 			}
-			return "IBAN tapılmadı.";
-
-		case "[number of accounts check]":
-			List<CustomerAccount> accs = customerAccountService.getUserAccounts(username);
-			return String.valueOf(accs.size());
-
-		case "[account currency check]":
-			List<CustomerAccount> currencyAccounts = customerAccountService.getUserAccounts(username);
-			return currencyAccounts.stream().map(a -> a.getCurrency().name()).distinct().reduce("",
-					(a, b) -> a + " " + b);
-
-		case "[loan debt check]":
-			Object loanResponse = loanService.getLoanDebt().getBody();
-			if (loanResponse instanceof String) {
-				return (String) loanResponse;
-			} else if (loanResponse instanceof Map<?, ?> responseMap) {
-				Object totalDebt = responseMap.get("totalDebt");
-				return totalDebt != null ? totalDebt.toString() + " AZN" : "Borc tapılmadı.";
+			case "[number of accounts check]" -> {
+				List<CustomerAccount> accs = customerAccountService.getUserAccounts(username);
+				yield accs.isEmpty() ? "" : String.valueOf(accs.size());
 			}
-			return "Kredit məlumatı alınmadı.";
-
-		case "[account history]":
-			List<CustomerAccountHistory> historyList = customerAccountService.getAccountHistory();
-			if (historyList.isEmpty())
-				return "Tarixçə boşdur.";
-			CustomerAccountHistory lastOp = historyList.get(historyList.size() - 1);
-			return String.format("Son əməliyyat: %s, %s %s", lastOp.getOperationType(), lastOp.getAmount(),
-					lastOp.getCurrency());
-
-		case "[loan history]":
-			Object loanHistoryObj = loanService.getLoanHistory().getBody();
-			if (!(loanHistoryObj instanceof List<?> loanHistoryList) || loanHistoryList.isEmpty())
-				return "Kredit tarixçəsi boşdur.";
-			Object lastLoanObj = loanHistoryList.get(loanHistoryList.size() - 1);
-			if (lastLoanObj instanceof Map<?, ?> map) {
-				return String.format("Son kredit: %s AZN, %s", map.get("amount"), map.get("date"));
+			case "[account currency check]" -> {
+				List<CustomerAccount> currencyAccounts = customerAccountService.getUserAccounts(username);
+				yield currencyAccounts.isEmpty() ? "" :
+					currencyAccounts.stream().map(a -> a.getCurrency().name()).distinct().collect(Collectors.joining(" "));
 			}
-			return "Son kredit məlumatı tapılmadı.";
+			case "[loan debt check]" -> {
+				Object loanResponse = loanService.getLoanDebt().getBody();
+				if (loanResponse instanceof String str) {
+					yield str;
+				} else if (loanResponse instanceof Map<?, ?> map) {
+					Object totalDebt = map.get("totalDebt");
+					yield totalDebt != null ? totalDebt.toString() + " AZN" : "";
+				}
+				yield "";
+			}
+			case "[account history]" -> {
+				List<CustomerAccountHistory> historyList = customerAccountService.getAccountHistory();
+				if (historyList.isEmpty()) yield "";
+				CustomerAccountHistory lastOp = historyList.get(historyList.size() - 1);
+				yield String.format("%s, %s %s", lastOp.getOperationType(), lastOp.getAmount(), lastOp.getCurrency());
+			}
+			case "[loan history]" -> {
+				Object loanHistoryObj = loanService.getLoanHistory().getBody();
+				if (!(loanHistoryObj instanceof List<?> list) || list.isEmpty()) yield "";
+				Object lastLoanObj = list.get(list.size() - 1);
+				if (lastLoanObj instanceof Map<?, ?> map) {
+					yield String.format("%s AZN, %s", map.get("amount"), map.get("date"));
+				}
+				yield "";
+			}
+			case "[transfer history]" -> {
+				List<MoneyTransfer> transfers = moneyTransferService.getTransferHistory();
+				if (transfers.isEmpty()) yield "";
+				MoneyTransfer lastTransfer = transfers.get(transfers.size() - 1);
+				yield String.format("%s AZN -> %s", lastTransfer.getAmount().toPlainString(), lastTransfer.getReceiverIban());
+			}
+			default -> "";
+		};
+	}
 
-		case "[transfer history]":
-			List<MoneyTransfer> transfers = moneyTransferService.getTransferHistory();
-			if (transfers.isEmpty())
-				return "Köçürmə tarixçəsi boşdur.";
-			MoneyTransfer lastTransfer = transfers.get(transfers.size() - 1);
-			return String.format("Son köçürmə: %s AZN -> %s", lastTransfer.getAmount().toPlainString(),
-					lastTransfer.getReceiverIban());
-
-		default:
-			return "";
-		}
+	private boolean isUserAuthenticated() {
+		var auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal());
 	}
 
 	private String getAuthenticatedUsername() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+
+	private boolean isPersonalCategory(String category) {
+		return switch (category) {
+			case "[account balans check]",
+				 "[iban code check]",
+				 "[number of accounts check]",
+				 "[account currency check]",
+				 "[loan debt check]",
+				 "[account history]",
+				 "[loan history]",
+				 "[transfer history]" -> true;
+			default -> false;
+		};
 	}
 
 	static class Question {
